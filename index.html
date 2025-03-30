@@ -46,7 +46,7 @@
                             <div class="scene-part">
                                 <img src="images/dev-machine.png" alt="Desenvolvedor feliz" class="scene-image">
                                 <div class="scene-caption">
-                                    <h4>Ana: Desenvolvedora</h4>
+                                    <h4>Alan: Desenvolvedor</h4>
                                     <p>"Meu aplicativo funciona perfeitamente no meu computador!"</p>
                                 </div>
                             </div>
@@ -294,222 +294,643 @@
             <h2>Exemplos práticos de uso do Docker</h2>
             
             <div class="example" id="exemplo1">
-                <h3>Exemplo 1: Aplicação Web Simples</h3>
+                <h3>Exemplo 1: Dashboard de Dados com Streamlit</h3>
                 <div class="content-box">
-                    <p>Vamos criar um servidor web simples com Node.js e empacotá-lo em um contêiner Docker.</p>
+                    <p>Criando um dashboard interativo de visualização de dados com Streamlit e empacotando-o em um contêiner Docker.</p>
                     <div class="code-tabs">
-                        <button class="tab-button active" onclick="showTab('exemplo1-codigo')">Código</button>
+                        <button class="tab-button active" onclick="showTab('exemplo1-codigo')">Código Python</button>
                         <button class="tab-button" onclick="showTab('exemplo1-dockerfile')">Dockerfile</button>
                         <button class="tab-button" onclick="showTab('exemplo1-comandos')">Comandos</button>
                     </div>
                     <div id="exemplo1-codigo" class="tab-content active">
-                        <pre><code class="language-javascript">// app.js
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3000;
+                        <pre><code class="language-python"># app.py
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
 
-app.get('/', (req, res) => {
-  res.send('Olá do Docker! 👋');
-});
+# Configuração da página
+st.set_page_config(page_title="Dashboard de Vendas", layout="wide")
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});</code></pre>
+# Título
+st.title("Dashboard de Vendas - 2023")
+
+# Carregar dados de exemplo
+@st.cache_data
+def load_data():
+    data = {
+        'Mês': ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+        'Vendas': [15000, 17500, 19800, 22300, 21500, 25000]
+    }
+    return pd.DataFrame(data)
+
+df = load_data()
+
+# Mostrar dados
+st.subheader("Dados de Vendas")
+st.dataframe(df)
+
+# Visualização
+st.subheader("Tendência de Vendas")
+fig, ax = plt.subplots(figsize=(10, 4))
+ax.plot(df['Mês'], df['Vendas'], marker='o')
+ax.set_ylabel('Vendas (R$)')
+ax.grid(True)
+st.pyplot(fig)
+
+# Métricas
+st.subheader("Métricas")
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.metric("Total de Vendas", f"R$ {df['Vendas'].sum():,.2f}")
+with col2:
+    st.metric("Média Mensal", f"R$ {df['Vendas'].mean():,.2f}")
+with col3:
+    st.metric("Crescimento", f"{((df['Vendas'].iloc[-1] / df['Vendas'].iloc[0]) - 1) * 100:.1f}%")</code></pre>
                     </div>
                     <div id="exemplo1-dockerfile" class="tab-content">
                         <pre><code class="language-dockerfile"># Dockerfile
-FROM node:14-alpine
+FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install
+# Instalar dependências
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
+# Copiar código
 COPY . .
 
-EXPOSE 3000
+# Expor porta para o Streamlit
+EXPOSE 8501
 
-CMD ["node", "app.js"]</code></pre>
+# Comando para iniciar o Streamlit
+CMD ["streamlit", "run", "app.py", "--server.address=0.0.0.0"]</code></pre>
                     </div>
                     <div id="exemplo1-comandos" class="tab-content">
-                        <pre><code class="language-bash"># Construir a imagem
-docker build -t minha-app-web .
+                        <pre><code class="language-bash"># Criar o arquivo requirements.txt
+echo "streamlit==1.31.0
+pandas==2.1.0
+matplotlib==3.8.0" > requirements.txt
+
+# Construir a imagem Docker
+docker build -t dashboard-vendas .
 
 # Executar o contêiner
-docker run -p 3000:3000 -d minha-app-web
+docker run -p 8501:8501 -d --name streamlit-app dashboard-vendas
 
-# Ver contêineres em execução
-docker ps</code></pre>
+# Acessar o dashboard
+# Abra seu navegador em http://localhost:8501</code></pre>
                     </div>
                     <div class="example-description">
                         <p><strong>Benefícios neste exemplo:</strong></p>
                         <ul>
-                            <li>Aplicação isolada com todas suas dependências</li>
-                            <li>Fácil distribuição: qualquer pessoa pode executar com o mesmo resultado</li>
-                            <li>Sem necessidade de instalar Node.js na máquina host</li>
+                            <li>Dashboard de visualização de dados pronto para uso em qualquer ambiente</li>
+                            <li>Sem necessidade de instalar Python, Streamlit ou outras dependências no host</li>
+                            <li>Portabilidade para compartilhar facilmente com a equipe</li>
+                            <li>Ambiente isolado com versões específicas das bibliotecas</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
             <div class="example" id="exemplo2">
-                <h3>Exemplo 2: Banco de Dados</h3>
+                <h3>Exemplo 2: API de Dados com FastAPI</h3>
                 <div class="content-box">
-                    <p>Executando um banco de dados MySQL em um contêiner Docker.</p>
+                    <p>Criando uma API para acesso a dados usando FastAPI em um contêiner Docker.</p>
                     <div class="code-tabs">
-                        <button class="tab-button active" onclick="showTab('exemplo2-comandos')">Comandos</button>
-                        <button class="tab-button" onclick="showTab('exemplo2-volume')">Persistência</button>
+                        <button class="tab-button active" onclick="showTab('exemplo2-codigo')">Código Python</button>
+                        <button class="tab-button" onclick="showTab('exemplo2-dockerfile')">Dockerfile</button>
+                        <button class="tab-button" onclick="showTab('exemplo2-comandos')">Comandos</button>
                     </div>
-                    <div id="exemplo2-comandos" class="tab-content active">
-                        <pre><code class="language-bash"># Baixar e iniciar um contêiner MySQL
-docker run --name meu-mysql -e MYSQL_ROOT_PASSWORD=minhasenha -e MYSQL_DATABASE=meudb -p 3306:3306 -d mysql:8.0
+                    <div id="exemplo2-codigo" class="tab-content active">
+                        <pre><code class="language-python"># main.py
+from fastapi import FastAPI, Query
+from pydantic import BaseModel
+from typing import List, Optional
+import pandas as pd
 
-# Conectar ao MySQL rodando no contêiner
-docker exec -it meu-mysql mysql -uroot -pminhasenha meudb
+app = FastAPI(title="API de Dados de Vendas")
 
-# Parar o contêiner
-docker stop meu-mysql
+# Dados simulados
+vendas_df = pd.DataFrame({
+    'id': range(1, 11),
+    'produto': ['Laptop', 'Mouse', 'Teclado', 'Monitor', 'Headphone', 
+                'Webcam', 'SSD', 'RAM', 'GPU', 'CPU'],
+    'categoria': ['Computadores', 'Acessórios', 'Acessórios', 'Periféricos', 'Áudio',
+                 'Periféricos', 'Componentes', 'Componentes', 'Componentes', 'Componentes'],
+    'preco': [3500, 150, 200, 1200, 350, 180, 450, 300, 2000, 1500],
+    'quantidade_vendida': [12, 85, 63, 35, 42, 30, 55, 70, 22, 25]
+})
 
-# Iniciar novamente
-docker start meu-mysql</code></pre>
+class Produto(BaseModel):
+    id: int
+    produto: str
+    categoria: str
+    preco: float
+    quantidade_vendida: int
+
+@app.get("/")
+def read_root():
+    return {"mensagem": "API de Dados de Vendas"}
+
+@app.get("/produtos", response_model=List[Produto])
+def get_produtos(
+    categoria: Optional[str] = Query(None, description="Filtrar por categoria"),
+    min_preco: Optional[float] = Query(None, description="Preço mínimo"),
+    max_preco: Optional[float] = Query(None, description="Preço máximo")
+):
+    df = vendas_df.copy()
+    
+    if categoria:
+        df = df[df['categoria'] == categoria]
+    
+    if min_preco is not None:
+        df = df[df['preco'] >= min_preco]
+    
+    if max_preco is not None:
+        df = df[df['preco'] <= max_preco]
+    
+    return df.to_dict(orient='records')
+
+@app.get("/produtos/{produto_id}", response_model=Produto)
+def get_produto(produto_id: int):
+    produto = vendas_df[vendas_df['id'] == produto_id]
+    if not produto.empty:
+        return produto.iloc[0].to_dict()
+    return {"erro": "Produto não encontrado"}</code></pre>
                     </div>
-                    <div id="exemplo2-volume" class="tab-content">
-                        <pre><code class="language-bash"># Executar MySQL com um volume para persistência de dados
-docker run --name meu-mysql -v mysql-dados:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=minhasenha -e MYSQL_DATABASE=meudb -p 3306:3306 -d mysql:8.0
+                    <div id="exemplo2-dockerfile" class="tab-content">
+                        <pre><code class="language-dockerfile"># Dockerfile
+FROM python:3.10-slim
 
-# Listar volumes
-docker volume ls
+WORKDIR /app
 
-# Mesmo que o contêiner seja removido, os dados persistem
-docker rm -f meu-mysql
-docker run --name meu-mysql-novo -v mysql-dados:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=minhasenha -p 3306:3306 -d mysql:8.0</code></pre>
+# Copiar e instalar dependências
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiar código
+COPY . .
+
+# Expor porta para a API
+EXPOSE 8000
+
+# Iniciar API com Uvicorn
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</code></pre>
+                    </div>
+                    <div id="exemplo2-comandos" class="tab-content">
+                        <pre><code class="language-bash"># Criar o arquivo requirements.txt
+echo "fastapi==0.104.0
+uvicorn==0.23.2
+pandas==2.1.0
+pydantic==2.4.2" > requirements.txt
+
+# Construir a imagem Docker
+docker build -t api-vendas .
+
+# Executar o contêiner
+docker run -p 8000:8000 -d --name fastapi-app api-vendas
+
+# Testar a API
+# Acesse http://localhost:8000/docs para ver a documentação interativa</code></pre>
                     </div>
                     <div class="example-description">
                         <p><strong>Benefícios neste exemplo:</strong></p>
                         <ul>
-                            <li>Fácil configuração de bancos de dados sem instalação complexa</li>
-                            <li>Possibilidade de ter múltiplas versões de banco de dados na mesma máquina</li>
-                            <li>Persistência de dados com volumes Docker</li>
-                            <li>Ambiente de desenvolvimento consistente com produção</li>
+                            <li>API de dados pronta para consumo por outras aplicações</li>
+                            <li>Documentação interativa automática com Swagger UI</li>
+                            <li>Isolamento de dependências e versões específicas</li>
+                            <li>Fácil implantação em qualquer ambiente que tenha Docker</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
             <div class="example" id="exemplo3">
-                <h3>Exemplo 3: Ambiente de Desenvolvimento</h3>
+                <h3>Exemplo 3: Banco de Dados PostgreSQL</h3>
                 <div class="content-box">
-                    <p>Criando um ambiente de desenvolvimento padronizado para uma equipe.</p>
+                    <p>Executando um banco de dados PostgreSQL para análise de dados em um contêiner Docker.</p>
                     <div class="code-tabs">
-                        <button class="tab-button active" onclick="showTab('exemplo3-dockerfile')">Dockerfile</button>
-                        <button class="tab-button" onclick="showTab('exemplo3-comandos')">Comandos</button>
+                        <button class="tab-button active" onclick="showTab('exemplo3-comandos')">Comandos Docker</button>
+                        <button class="tab-button" onclick="showTab('exemplo3-sql')">Consultas SQL</button>
+                        <button class="tab-button" onclick="showTab('exemplo3-volume')">Persistência</button>
                     </div>
-                    <div id="exemplo3-dockerfile" class="tab-content active">
-                        <pre><code class="language-dockerfile"># Dockerfile.dev
-FROM python:3.9
+                    <div id="exemplo3-comandos" class="tab-content active">
+                        <pre><code class="language-bash"># Iniciar contêiner PostgreSQL
+docker run --name postgres-dados -e POSTGRES_PASSWORD=segredo -e POSTGRES_USER=analista -e POSTGRES_DB=datawarehouse -p 5432:5432 -d postgres:14.8
 
-WORKDIR /app
+# Verificar status do contêiner
+docker ps
 
-# Instalar dependências de desenvolvimento
-RUN pip install pytest pytest-cov flake8 black isort
+# Executar o cliente psql dentro do contêiner
+docker exec -it postgres-dados psql -U analista -d datawarehouse
 
-# Instalar dependências do projeto
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+# Parar o contêiner
+docker stop postgres-dados
 
-# Montar o código do projeto como um volume
-# para refletir as alterações em tempo real
-
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]</code></pre>
+# Reiniciar o contêiner
+docker start postgres-dados</code></pre>
                     </div>
-                    <div id="exemplo3-comandos" class="tab-content">
-                        <pre><code class="language-bash"># Construir a imagem de desenvolvimento
-docker build -t meu-projeto-dev -f Dockerfile.dev .
+                    <div id="exemplo3-sql" class="tab-content">
+                        <pre><code class="language-sql">-- Criar tabela para armazenar dados
+CREATE TABLE vendas (
+    id SERIAL PRIMARY KEY,
+    data_venda DATE NOT NULL,
+    produto VARCHAR(100) NOT NULL,
+    categoria VARCHAR(50) NOT NULL,
+    valor DECIMAL(10,2) NOT NULL,
+    quantidade INT NOT NULL
+);
 
-# Iniciar contêiner de desenvolvimento com código montado como volume
-docker run -it --name dev -p 8000:8000 -v $(pwd):/app meu-projeto-dev
+-- Inserir dados de exemplo
+INSERT INTO vendas (data_venda, produto, categoria, valor, quantidade)
+VALUES 
+  ('2023-01-15', 'Curso Python', 'Educação', 197.00, 45),
+  ('2023-01-20', 'Assinatura BI', 'Software', 89.90, 28),
+  ('2023-02-05', 'Consultoria', 'Serviços', 1200.00, 3),
+  ('2023-02-12', 'Curso SQL', 'Educação', 147.00, 52),
+  ('2023-03-01', 'Licença Tableau', 'Software', 999.00, 15);
 
-# Executar testes dentro do contêiner
-docker exec -it dev pytest
+-- Análise de vendas por categoria
+SELECT 
+    categoria,
+    COUNT(*) AS total_vendas,
+    SUM(valor * quantidade) AS receita_total,
+    AVG(valor) AS ticket_medio
+FROM vendas
+GROUP BY categoria
+ORDER BY receita_total DESC;</code></pre>
+                    </div>
+                    <div id="exemplo3-volume" class="tab-content">
+                        <pre><code class="language-bash"># Executar PostgreSQL com volume para persistência
+docker run --name postgres-dados \
+  -e POSTGRES_PASSWORD=segredo \
+  -e POSTGRES_USER=analista \
+  -e POSTGRES_DB=datawarehouse \
+  -v postgres_data:/var/lib/postgresql/data \
+  -p 5432:5432 \
+  -d postgres:14.8
 
-# Executar formatação de código
-docker exec -it dev black .</code></pre>
+# Acessar usando ferramentas externas
+# Host: localhost
+# Port: 5432
+# User: analista
+# Password: segredo
+# Database: datawarehouse
+
+# Criar backup do banco de dados
+docker exec -t postgres-dados pg_dump -U analista -d datawarehouse > backup.sql
+
+# Restaurar backup (para um contêiner novo)
+# 1. Criar novo contêiner
+docker run --name postgres-dados-novo -e POSTGRES_PASSWORD=segredo -e POSTGRES_USER=analista -e POSTGRES_DB=datawarehouse -v postgres_data_novo:/var/lib/postgresql/data -p 5433:5432 -d postgres:14.8
+
+# 2. Restaurar dados
+cat backup.sql | docker exec -i postgres-dados-novo psql -U analista -d datawarehouse</code></pre>
                     </div>
                     <div class="example-description">
                         <p><strong>Benefícios neste exemplo:</strong></p>
                         <ul>
-                            <li>Ambiente de desenvolvimento idêntico para todos os membros da equipe</li>
-                            <li>Fácil onboarding de novos desenvolvedores</li>
-                            <li>Todas as ferramentas de desenvolvimento já configuradas</li>
-                            <li>Isolamento do ambiente de desenvolvimento do sistema host</li>
+                            <li>Banco de dados para análise pronto para uso em segundos</li>
+                            <li>Persistência de dados com volumes Docker</li>
+                            <li>Isolamento completo do sistema host</li>
+                            <li>Fácil backup e restauração</li>
+                            <li>Possibilidade de executar múltiplas versões do PostgreSQL no mesmo sistema</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
             <div class="example" id="exemplo4">
-                <h3>Exemplo 4: Aplicação Multi-Container com Docker Compose</h3>
+                <h3>Exemplo 4: Aplicação Completa de Análise de Dados com Docker Compose</h3>
                 <div class="content-box">
-                    <p>Criando uma aplicação que usa múltiplos serviços interconectados.</p>
+                    <p>Combinando PostgreSQL, FastAPI e Streamlit em uma stack completa de análise de dados usando Docker Compose.</p>
                     <div class="code-tabs">
                         <button class="tab-button active" onclick="showTab('exemplo4-compose')">docker-compose.yml</button>
+                        <button class="tab-button" onclick="showTab('exemplo4-fastapi')">API (FastAPI)</button>
+                        <button class="tab-button" onclick="showTab('exemplo4-streamlit')">Dashboard</button>
                         <button class="tab-button" onclick="showTab('exemplo4-comandos')">Comandos</button>
                     </div>
                     <div id="exemplo4-compose" class="tab-content active">
                         <pre><code class="language-yaml"># docker-compose.yml
-version: '3'
+version: '3.8'
 
 services:
-  web:
-    build: ./web
-    ports:
-      - "5000:5000"
-    depends_on:
-      - db
-      - redis
-    environment:
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/app
-      - REDIS_URL=redis://redis:6379
-
+  # Banco de dados
   db:
-    image: postgres:13
+    image: postgres:14.8
+    container_name: postgres-analytics
+    environment:
+      - POSTGRES_USER=analista
+      - POSTGRES_PASSWORD=segredo
+      - POSTGRES_DB=datawarehouse
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=app
+      # Inicialização do banco com script SQL
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U analista -d datawarehouse"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  redis:
-    image: redis:6
+  # API para acesso aos dados
+  api:
+    build: ./api
+    container_name: dados-api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://analista:segredo@db:5432/datawarehouse
     ports:
-      - "6379:6379"
+      - "8000:8000"
+
+  # Dashboard para visualização
+  dashboard:
+    build: ./dashboard
+    container_name: dados-dashboard
+    depends_on:
+      - api
+    environment:
+      - API_URL=http://api:8000
+    ports:
+      - "8501:8501"
 
 volumes:
   postgres_data:</code></pre>
                     </div>
+                    <div id="exemplo4-fastapi" class="tab-content">
+                        <pre><code class="language-python"># api/main.py
+from fastapi import FastAPI, Depends
+from sqlalchemy import create_engine, Column, Integer, String, Float, Date
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, Session
+import os
+from datetime import date
+from pydantic import BaseModel
+from typing import List
+
+# Configuração do banco de dados
+DATABASE_URL = os.environ.get("DATABASE_URL")
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+# Modelo SQLAlchemy
+class VendaDB(Base):
+    __tablename__ = "vendas"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    data_venda = Column(Date)
+    produto = Column(String)
+    categoria = Column(String)
+    valor = Column(Float)
+    quantidade = Column(Integer)
+
+# Modelo Pydantic
+class Venda(BaseModel):
+    id: int
+    data_venda: date
+    produto: str
+    categoria: str
+    valor: float
+    quantidade: int
+    
+    class Config:
+        orm_mode = True
+
+# Dependência para obter a sessão do banco
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+app = FastAPI(title="API de Análise de Dados")
+
+@app.get("/vendas", response_model=List[Venda])
+def listar_vendas(db: Session = Depends(get_db)):
+    return db.query(VendaDB).all()
+
+@app.get("/vendas/categoria/{categoria}", response_model=List[Venda])
+def vendas_por_categoria(categoria: str, db: Session = Depends(get_db)):
+    return db.query(VendaDB).filter(VendaDB.categoria == categoria).all()
+
+@app.get("/vendas/analise")
+def analise_vendas(db: Session = Depends(get_db)):
+    # Exemplo de consulta mais complexa
+    from sqlalchemy import func
+    
+    resultado = db.query(
+        VendaDB.categoria,
+        func.count(VendaDB.id).label("total_vendas"),
+        func.sum(VendaDB.valor * VendaDB.quantidade).label("receita_total"),
+        func.avg(VendaDB.valor).label("ticket_medio")
+    ).group_by(VendaDB.categoria).all()
+    
+    return [
+        {
+            "categoria": r.categoria,
+            "total_vendas": r.total_vendas,
+            "receita_total": float(r.receita_total),
+            "ticket_medio": float(r.ticket_medio)
+        }
+        for r in resultado
+    ]</code></pre>
+                    </div>
+                    <div id="exemplo4-streamlit" class="tab-content">
+                        <pre><code class="language-python"># dashboard/app.py
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+import requests
+import os
+import json
+
+# Configuração
+API_URL = os.environ.get("API_URL", "http://api:8000")
+
+st.set_page_config(
+    page_title="Dashboard de Análise de Vendas",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# Título
+st.title("Dashboard de Análise de Vendas")
+st.write("Dashboard interativo para análise de dados de vendas")
+
+# Funções para carregar dados da API
+@st.cache_data(ttl=300)
+def carregar_vendas():
+    response = requests.get(f"{API_URL}/vendas")
+    return pd.DataFrame(response.json())
+
+@st.cache_data(ttl=300)
+def carregar_analise():
+    response = requests.get(f"{API_URL}/vendas/analise")
+    return pd.DataFrame(response.json())
+
+try:
+    # Carregar dados
+    df_vendas = carregar_vendas()
+    df_analise = carregar_analise()
+    
+    # Layout em colunas
+    col1, col2 = st.columns(2)
+    
+    # Coluna 1: Gráfico de barras - Receita por categoria
+    with col1:
+        st.subheader("Receita Total por Categoria")
+        fig1 = px.bar(
+            df_analise, 
+            x="categoria", 
+            y="receita_total",
+            text_auto=True,
+            color="categoria",
+            title="Receita Total por Categoria de Produto"
+        )
+        st.plotly_chart(fig1, use_container_width=True)
+    
+    # Coluna 2: Gráfico de pizza - Proporção de vendas
+    with col2:
+        st.subheader("Proporção de Vendas por Categoria")
+        fig2 = px.pie(
+            df_analise, 
+            values="total_vendas", 
+            names="categoria",
+            title="Distribuição de Vendas por Categoria"
+        )
+        st.plotly_chart(fig2, use_container_width=True)
+    
+    # Tabela completa
+    st.subheader("Dados de Vendas")
+    st.dataframe(df_vendas)
+    
+    # Filtro por categoria
+    st.sidebar.title("Filtros")
+    categorias = ["Todas"] + sorted(df_vendas["categoria"].unique().tolist())
+    categoria_selecionada = st.sidebar.selectbox("Selecione uma categoria:", categorias)
+    
+    if categoria_selecionada != "Todas":
+        df_filtrado = df_vendas[df_vendas["categoria"] == categoria_selecionada]
+        st.subheader(f"Vendas na categoria: {categoria_selecionada}")
+        st.dataframe(df_filtrado)
+        
+        # Gráfico de linha para a categoria
+        if not df_filtrado.empty:
+            df_por_data = df_filtrado.groupby("data_venda").agg(
+                {"valor": lambda x: (x * df_filtrado["quantidade"]).sum()}
+            ).reset_index()
+            df_por_data.columns = ["data", "receita"]
+            
+            fig3 = px.line(
+                df_por_data, 
+                x="data", 
+                y="receita",
+                markers=True,
+                title=f"Evolução de Receita: {categoria_selecionada}"
+            )
+            st.plotly_chart(fig3, use_container_width=True)
+    
+except Exception as e:
+    st.error(f"Erro ao carregar dados: {e}")
+    st.warning("Verifique se a API está disponível e funcionando corretamente.")</code></pre>
+                    </div>
                     <div id="exemplo4-comandos" class="tab-content">
-                        <pre><code class="language-bash"># Iniciar todos os serviços
+                        <pre><code class="language-bash"># Estrutura de diretórios
+mkdir -p projeto-dados/{api,dashboard}
+
+# Criar script de inicialização do banco
+cat > init.sql << 'EOF'
+CREATE TABLE vendas (
+    id SERIAL PRIMARY KEY,
+    data_venda DATE NOT NULL,
+    produto VARCHAR(100) NOT NULL,
+    categoria VARCHAR(50) NOT NULL,
+    valor DECIMAL(10,2) NOT NULL,
+    quantidade INT NOT NULL
+);
+
+INSERT INTO vendas (data_venda, produto, categoria, valor, quantidade)
+VALUES 
+  ('2023-01-15', 'Curso Python', 'Educação', 197.00, 45),
+  ('2023-01-20', 'Assinatura BI', 'Software', 89.90, 28),
+  ('2023-02-05', 'Consultoria', 'Serviços', 1200.00, 3),
+  ('2023-02-12', 'Curso SQL', 'Educação', 147.00, 52),
+  ('2023-03-01', 'Licença Tableau', 'Software', 999.00, 15);
+EOF
+
+# Criar Dockerfile para a API
+cat > api/Dockerfile << 'EOF'
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+EOF
+
+# Requisitos para a API
+cat > api/requirements.txt << 'EOF'
+fastapi==0.104.0
+uvicorn==0.23.2
+sqlalchemy==2.0.22
+psycopg2-binary==2.9.9
+pydantic==2.4.2
+EOF
+
+# Criar Dockerfile para o Dashboard
+cat > dashboard/Dockerfile << 'EOF'
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["streamlit", "run", "app.py", "--server.address=0.0.0.0"]
+EOF
+
+# Requisitos para o Dashboard
+cat > dashboard/requirements.txt << 'EOF'
+streamlit==1.31.0
+pandas==2.1.0
+plotly==5.18.0
+requests==2.31.0
+EOF
+
+# Iniciar todos os serviços
 docker-compose up -d
 
-# Ver logs de todos os serviços
+# Verificar logs dos serviços
 docker-compose logs -f
 
 # Parar todos os serviços
 docker-compose down
 
-# Reconstruir e reiniciar apenas o serviço web
-docker-compose up -d --build web</code></pre>
+# Parar e remover volumes (limpar dados)
+docker-compose down -v</code></pre>
                     </div>
                     <div class="example-description">
                         <p><strong>Benefícios neste exemplo:</strong></p>
                         <ul>
-                            <li>Gerenciamento simplificado de múltiplos contêineres interconectados</li>
-                            <li>Configuração declarativa da infraestrutura como código</li>
-                            <li>Fácil reprodução do ambiente completo da aplicação</li>
-                            <li>Gerenciamento do ciclo de vida de todos os serviços com comandos simples</li>
+                            <li>Stack completa de análise de dados orquestrada com um único comando</li>
+                            <li>Comunicação entre serviços usando a rede interna do Docker</li>
+                            <li>Gerenciamento centralizado de configurações e dependências</li>
+                            <li>Persistência de dados com volumes Docker</li>
+                            <li>Pipeline de dados completo: banco → API → dashboard</li>
+                            <li>Fácil distribuição da aplicação completa para outros ambientes</li>
                         </ul>
                     </div>
                 </div>
