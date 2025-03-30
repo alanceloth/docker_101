@@ -544,6 +544,36 @@ pre {
     overflow-x: auto;
 }
 
+pre.has-copy-button {
+    padding-top: 40px;
+}
+
+.copy-button {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    border: none;
+    background-color: #0db7ed;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+    z-index: 10;
+}
+
+.copy-button:hover {
+    opacity: 1;
+    background-color: #0096cb;
+}
+
+.copy-button.copied {
+    background-color: #4CAF50;
+}
+
 .hljs {
     color: #e3e3e3; /* Cor de texto mais clara para melhor contraste */
 }
@@ -623,6 +653,17 @@ pre {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid #eee;
+}
+
+code {
+    font-family: 'Consolas', 'Monaco', monospace;
+}
+
+pre code {
+    display: block;
+    padding: 15px;
+    line-height: 1.5;
+    overflow-x: auto;
 }
 
 /* Responsive adjustments */
