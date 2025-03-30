@@ -236,6 +236,244 @@ section h2 {
     color: var(--secondary-color);
 }
 
+/* Intro story section styles */
+.intro-story {
+    margin-bottom: 2rem;
+}
+
+.story-scenario {
+    margin-bottom: 2rem;
+}
+
+.story-scenario h3 {
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.story-scene {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.scene-part {
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    margin: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.scene-part:hover {
+    transform: translateY(-5px);
+}
+
+.scene-image {
+    max-width: 180px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.scene-caption h4 {
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.scene-caption p {
+    font-style: italic;
+}
+
+.scene-arrow {
+    display: flex;
+    align-items: center;
+    margin: 0 1rem;
+    position: relative;
+    width: 80px;
+    height: 30px;
+}
+
+.arrow-line {
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-color);
+}
+
+.arrow-head {
+    position: absolute;
+    right: -10px;
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 15px solid var(--primary-color);
+}
+
+.problem-quote {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.problem-quote blockquote {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.why-this-happens {
+    margin: 2rem 0;
+}
+
+.why-this-happens h3 {
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.environment-differences {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.env-item {
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    transition: transform 0.3s ease;
+    border-top: 3px solid var(--primary-color);
+}
+
+.env-item:hover {
+    transform: translateY(-5px);
+}
+
+.env-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.env-item h4 {
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.solution-preview {
+    margin-top: 3rem;
+    border-top: 1px solid #eee;
+    padding-top: 2rem;
+}
+
+.solution-preview h3 {
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.analogy-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.analogy-part {
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    margin: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.analogy-part:first-child {
+    border-left: 4px solid #fc8181;
+}
+
+.analogy-part:last-child {
+    border-left: 4px solid #68d391;
+}
+
+.analogy-part:hover {
+    transform: translateY(-5px);
+}
+
+.analogy-part h4 {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.analogy-image-container {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.analogy-image {
+    max-width: 100%;
+    max-height: 180px;
+}
+
+.analogy-arrow {
+    display: flex;
+    align-items: center;
+    margin: 0 1rem;
+    position: relative;
+    width: 80px;
+    height: 30px;
+}
+
+.solution-transition {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 2rem;
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border-left: 4px solid var(--primary-color);
+}
+
+.solution-transition p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.lets-learn-more {
+    margin-top: 1.5rem;
+}
+
+.arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid var(--primary-color);
+    margin: 1rem auto 0;
+}
+
 /* Examples */
 .example {
     margin-bottom: 3rem;

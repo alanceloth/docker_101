@@ -23,6 +23,7 @@
     <nav>
         <div class="container">
             <ul>
+                <li><a href="#o-problema">O Problema</a></li>
                 <li><a href="#o-que-sao-containers">O que são Containers</a></li>
                 <li><a href="#o-que-e">O que é Docker</a></li>
                 <li><a href="#para-que-serve">Para que serve</a></li>
@@ -34,6 +35,119 @@
     </nav>
 
     <main class="container">
+        <section id="o-problema">
+            <h2>O Problema: "Funciona na minha máquina"</h2>
+            <div class="content-box">
+                <div class="intro-story">
+                    <div class="story-scenario">
+                        <h3>Imagine esta situação...</h3>
+                        
+                        <div class="story-scene">
+                            <div class="scene-part">
+                                <img src="images/dev-machine.png" alt="Desenvolvedor feliz" class="scene-image">
+                                <div class="scene-caption">
+                                    <h4>Ana: Desenvolvedora</h4>
+                                    <p>"Meu aplicativo funciona perfeitamente no meu computador!"</p>
+                                </div>
+                            </div>
+                            
+                            <div class="scene-arrow">
+                                <div class="arrow-line"></div>
+                                <div class="arrow-head"></div>
+                            </div>
+                            
+                            <div class="scene-part">
+                                <img src="images/prod-server.png" alt="Servidor de produção com erro" class="scene-image">
+                                <div class="scene-caption">
+                                    <h4>Servidor de Produção</h4>
+                                    <p>"ERRO: Dependências incompatíveis!"</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="problem-quote">
+                            <blockquote>"Mas funciona na minha máquina!"</blockquote>
+                            <p>- Todo desenvolvedor, em algum momento</p>
+                        </div>
+                    </div>
+                    
+                    <div class="why-this-happens">
+                        <h3>Por que isso acontece?</h3>
+                        
+                        <div class="environment-differences">
+                            <div class="env-item">
+                                <div class="env-icon">🖥️</div>
+                                <h4>Versões de Software</h4>
+                                <p>Python 3.8 vs Python 3.10</p>
+                            </div>
+                            
+                            <div class="env-item">
+                                <div class="env-icon">📚</div>
+                                <h4>Bibliotecas</h4>
+                                <p>Versões diferentes de dependências</p>
+                            </div>
+                            
+                            <div class="env-item">
+                                <div class="env-icon">⚙️</div>
+                                <h4>Configurações</h4>
+                                <p>Caminhos de arquivos, variáveis de ambiente</p>
+                            </div>
+                            
+                            <div class="env-item">
+                                <div class="env-icon">💾</div>
+                                <h4>Sistema Operacional</h4>
+                                <p>Windows vs Linux vs macOS</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="solution-preview">
+                    <h3>A solução: Empacotar tudo junto!</h3>
+                    
+                    <div class="analogy-container">
+                        <div class="analogy-part">
+                            <h4>Problema: Transporte de itens soltos</h4>
+                            <div class="analogy-image-container">
+                                <img src="images/loose-items.png" alt="Itens soltos difíceis de transportar" class="analogy-image">
+                            </div>
+                            <ul>
+                                <li>Difícil de transportar</li>
+                                <li>Itens podem se perder</li>
+                                <li>Cada item precisa de tratamento diferente</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="analogy-arrow">
+                            <div class="arrow-line"></div>
+                            <div class="arrow-head"></div>
+                        </div>
+                        
+                        <div class="analogy-part">
+                            <h4>Solução: Contêineres padronizados</h4>
+                            <div class="analogy-image-container">
+                                <img src="images/shipping-container.png" alt="Contêiner de transporte padronizado" class="analogy-image">
+                            </div>
+                            <ul>
+                                <li>Formato padronizado</li>
+                                <li>Fácil de transportar</li>
+                                <li>Protege o conteúdo</li>
+                                <li>Mesmo tratamento para qualquer carga</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="solution-transition">
+                        <p>Na programação, <strong>Docker</strong> resolve este problema criando "contêineres" para suas aplicações, garantindo que funcionem em qualquer lugar da mesma forma.</p>
+                        <div class="lets-learn-more">
+                            <p>Vamos entender como isso funciona...</p>
+                            <div class="arrow-down"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="o-que-sao-containers">
             <h2>O que são Containers</h2>
             <div class="content-box">
