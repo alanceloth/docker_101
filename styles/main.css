@@ -537,32 +537,35 @@ section h2 {
 }
 
 pre {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 20px;
     background-color: #282c34;
-    border-radius: 0 0 var(--border-radius) var(--border-radius);
-    margin: 0;
     padding: 1rem;
     overflow-x: auto;
 }
 
 pre.has-copy-button {
-    padding-top: 40px;
+    padding-top: 10px;
 }
 
 .copy-button {
     position: absolute;
     top: 5px;
-    right: 10px;
+    right: 5px;
     border: none;
     background-color: #0db7ed;
     color: white;
-    padding: 5px 10px;
+    padding: 4px 8px;
     font-size: 12px;
     font-weight: bold;
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
     opacity: 0.8;
-    z-index: 10;
+    z-index: 100;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .copy-button:hover {
@@ -572,6 +575,26 @@ pre.has-copy-button {
 
 .copy-button.copied {
     background-color: #4CAF50;
+}
+
+code {
+    font-family: 'Consolas', 'Monaco', monospace;
+}
+
+pre code {
+    display: block;
+    padding: 15px;
+    line-height: 1.5;
+    overflow-x: auto;
+}
+
+.tab-content pre {
+    margin: 0;
+    border-radius: 0 0 6px 6px;
+}
+
+.code-tabs + .tab-content pre.has-copy-button {
+    padding-top: 35px;
 }
 
 .hljs {
@@ -653,17 +676,6 @@ pre.has-copy-button {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid #eee;
-}
-
-code {
-    font-family: 'Consolas', 'Monaco', monospace;
-}
-
-pre code {
-    display: block;
-    padding: 15px;
-    line-height: 1.5;
-    overflow-x: auto;
 }
 
 /* Responsive adjustments */

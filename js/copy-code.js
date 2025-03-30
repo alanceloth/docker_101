@@ -1,10 +1,14 @@
 // Função para adicionar botões de copiar a todos os blocos de código
 document.addEventListener('DOMContentLoaded', function() {
     // Selecionar todos os elementos pre que contêm code
-    const codeBlocks = document.querySelectorAll('pre code');
+    const codeBlocks = document.querySelectorAll('pre');
     
     // Para cada bloco de código, adicionar um botão de copiar
-    codeBlocks.forEach((codeBlock, index) => {
+    codeBlocks.forEach((preElement, index) => {
+        // Verificar se há elemento code dentro do pre
+        const codeElement = preElement.querySelector('code');
+        if (!codeElement) return;
+        
         // Criar o botão
         const copyButton = document.createElement('button');
         copyButton.className = 'copy-button';
@@ -12,18 +16,17 @@ document.addEventListener('DOMContentLoaded', function() {
         copyButton.title = 'Copiar para área de transferência';
         copyButton.dataset.index = index;
         
-        // Adicionar o botão ao contêiner pai (pre)
-        const preElement = codeBlock.parentElement;
+        // Adicionar o botão ao elemento pre
         preElement.classList.add('has-copy-button');
         preElement.appendChild(copyButton);
         
         // Adicionar evento de clique
         copyButton.addEventListener('click', function() {
             // Obter o conteúdo do código
-            const code = codeBlock.textContent;
+            const code = codeElement.textContent;
             
-            // Temporariamente ocultar o botão durante a cópia
-            copyButton.style.display = 'none';
+            // Feedback visual durante a cópia
+            copyButton.textContent = '...';
             
             // Usar a API de clipboard para copiar o texto
             navigator.clipboard.writeText(code)
@@ -46,10 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         copyButton.textContent = 'Copiar';
                     }, 2000);
-                })
-                .finally(() => {
-                    // Mostrar o botão novamente
-                    copyButton.style.display = 'block';
                 });
         });
     });
