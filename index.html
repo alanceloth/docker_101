@@ -755,15 +755,18 @@ EXPOSE 8501
 CMD ["streamlit", "run", "app.py", "--server.address=0.0.0.0"]</code></pre>
                     </div>
                     <div id="exemplo1-comandos" class="tab-content">
+                        <h5>Criar arquivo de dependências</h5>
                         <pre><code class="language-bash"># Criar o arquivo requirements.txt
 echo "streamlit==1.44.0
 pandas==2.2.3
-matplotlib==3.10.1" > requirements.txt
+matplotlib==3.10.1" > requirements.txt</code></pre>
 
-# Construir a imagem Docker
-docker build -t dashboard-vendas .
+                        <h5>Construir a imagem Docker</h5>
+                        <pre><code class="language-bash"># Construir a imagem Docker
+docker build -t dashboard-vendas .</code></pre>
 
-# Executar o contêiner
+                        <h5>Executar o contêiner</h5>
+                        <pre><code class="language-bash"># Executar o contêiner
 docker run -p 8501:8501 -d --name streamlit-app dashboard-vendas
 
 # Acessar o dashboard
@@ -858,14 +861,14 @@ def get_produto(produto_id: int):
 
 # Endpoint para inserir novos dados - disponível apenas no Docker Compose
 @app.post("/produtos", response_model=Produto)
-def create_produto(produto: ProdutoCreate):
+def criar_venda(venda: ProdutoCreate):
     # No exemplo do Docker Compose, este método salvaria no PostgreSQL
     global vendas_df
     
     novo_id = vendas_df['id'].max() + 1 if not vendas_df.empty else 1
     novo_produto = {
         'id': novo_id,
-        **produto.dict()
+        **venda.dict()
     }
     
     vendas_df = pd.concat([vendas_df, pd.DataFrame([novo_produto])])
@@ -891,19 +894,23 @@ EXPOSE 8000
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</code></pre>
                     </div>
                     <div id="exemplo2-comandos" class="tab-content">
+                        <h5>Criar arquivo de dependências</h5>
                         <pre><code class="language-bash"># Criar o arquivo requirements.txt
 echo "fastapi==0.115.12
 uvicorn==0.34.0
 pandas==2.2.3
-pydantic==2.11.1" > requirements.txt
+pydantic==2.11.1" > requirements.txt</code></pre>
 
-# Construir a imagem Docker
-docker build -t api-vendas .
+                        <h5>Construir a imagem Docker</h5>
+                        <pre><code class="language-bash"># Construir a imagem Docker
+docker build -t api-vendas .</code></pre>
 
-# Executar o contêiner
-docker run -p 8000:8000 -d --name fastapi-app api-vendas
+                        <h5>Executar o contêiner</h5>
+                        <pre><code class="language-bash"># Executar o contêiner
+docker run -p 8000:8000 -d --name fastapi-app api-vendas</code></pre>
 
-# Testar a API
+                        <h5>Testar a API</h5>
+                        <pre><code class="language-bash"># Testar a API
 # Acesse http://localhost:8000/docs para ver a documentação interativa</code></pre>
                     </div>
                     <div class="example-description">
@@ -928,19 +935,23 @@ docker run -p 8000:8000 -d --name fastapi-app api-vendas
                         <button class="tab-button" onclick="showTab('exemplo3-volume')">Persistência</button>
                     </div>
                     <div id="exemplo3-comandos" class="tab-content active">
+                        <h5>Iniciar contêiner PostgreSQL</h5>
                         <pre><code class="language-bash"># Iniciar contêiner PostgreSQL
-docker run --name postgres-dados -e POSTGRES_PASSWORD=segredo -e POSTGRES_USER=analista -e POSTGRES_DB=datawarehouse -p 5432:5432 -d postgres:14.8
+docker run --name postgres-dados -e POSTGRES_PASSWORD=segredo -e POSTGRES_USER=analista -e POSTGRES_DB=datawarehouse -p 5432:5432 -d postgres:14.8</code></pre>
 
-# Verificar status do contêiner
-docker ps
+                        <h5>Verificar status do contêiner</h5>
+                        <pre><code class="language-bash"># Verificar status do contêiner
+docker ps</code></pre>
 
-# Executar o cliente psql dentro do contêiner
+                        <h5>Acessar o banco de dados</h5>
+                        <pre><code class="language-bash"># Executar o cliente psql dentro do contêiner
 docker exec -it postgres-dados psql -U analista -d datawarehouse
 
 # No exemplo isolado, o banco começa vazio
-# No Docker Compose, será preenchido com dados iniciais e através da API
+# No Docker Compose, será preenchido com dados iniciais e através da API</code></pre>
 
-# Parar o contêiner
+                        <h5>Gerenciar o contêiner</h5>
+                        <pre><code class="language-bash"># Parar o contêiner
 docker stop postgres-dados
 
 # Reiniciar o contêiner
@@ -977,6 +988,7 @@ GROUP BY categoria
 ORDER BY receita_total DESC;</code></pre>
                     </div>
                     <div id="exemplo3-volume" class="tab-content">
+                        <h5>Executar PostgreSQL com volume</h5>
                         <pre><code class="language-bash"># Executar PostgreSQL com volume para persistência
 docker run --name postgres-dados \
   -e POSTGRES_PASSWORD=segredo \
@@ -984,16 +996,18 @@ docker run --name postgres-dados \
   -e POSTGRES_DB=datawarehouse \
   -v postgres_data:/var/lib/postgresql/data \
   -p 5432:5432 \
-  -d postgres:14.8
+  -d postgres:14.8</code></pre>
 
-# Acessar usando ferramentas externas
+                        <h5>Conexão externa</h5>
+                        <pre><code class="language-bash"># Acessar usando ferramentas externas
 # Host: localhost
 # Port: 5432
 # User: analista
 # Password: segredo
-# Database: datawarehouse
+# Database: datawarehouse</code></pre>
 
-# Criar backup do banco de dados
+                        <h5>Backup e restauração</h5>
+                        <pre><code class="language-bash"># Criar backup do banco de dados
 docker exec -t postgres-dados pg_dump -U analista -d datawarehouse > backup.sql
 
 # Restaurar backup (para um contêiner novo)
@@ -1317,10 +1331,12 @@ except Exception as e:
     st.warning("Verifique se a API está disponível e funcionando corretamente.")</code></pre>
                     </div>
                     <div id="exemplo4-comandos" class="tab-content">
+                        <h5>Estrutura inicial do projeto</h5>
                         <pre><code class="language-bash"># Estrutura de diretórios
-mkdir -p projeto-dados/{api,dashboard}
+mkdir -p projeto-dados/{api,dashboard}</code></pre>
 
-# Criar script de inicialização do banco
+                        <h5>Script de inicialização do banco</h5>
+                        <pre><code class="language-bash"># Criar script de inicialização do banco
 cat > init.sql << 'EOF'
 CREATE TABLE vendas (
     id SERIAL PRIMARY KEY,
@@ -1338,9 +1354,10 @@ VALUES
   ('2025-02-05', 'Consultoria', 'Serviços', 1200.00, 3),
   ('2025-02-12', 'Curso SQL', 'Educação', 147.00, 52),
   ('2025-03-01', 'Licença Tableau', 'Software', 999.00, 15);
-EOF
+EOF</code></pre>
 
-# Criar Dockerfile para a API
+                        <h5>Configuração da API</h5>
+                        <pre><code class="language-bash"># Criar Dockerfile para a API
 cat > api/Dockerfile << 'EOF'
 FROM python:3.12-slim
 
@@ -1367,9 +1384,10 @@ uvicorn==0.34.0
 pydantic==2.11.1
 sqlalchemy==2.0.22
 psycopg2-binary==2.9.9
-EOF
+EOF</code></pre>
 
-# Criar Dockerfile para o Dashboard
+                        <h5>Configuração do Dashboard</h5>
+                        <pre><code class="language-bash"># Criar Dockerfile para o Dashboard
 cat > dashboard/Dockerfile << 'EOF'
 FROM python:3.12-slim
 
@@ -1389,9 +1407,10 @@ streamlit==1.44.0
 pandas==2.2.3
 plotly==5.18.0
 requests==2.31.0
-EOF
+EOF</code></pre>
 
-# Iniciar todos os serviços
+                        <h5>Gerenciar Docker Compose</h5>
+                        <pre><code class="language-bash"># Iniciar todos os serviços
 docker-compose up -d
 
 # Verificar logs dos serviços
