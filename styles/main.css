@@ -382,6 +382,22 @@ footer a:hover {
     text-decoration: underline;
 }
 
+.author-credit {
+    margin-top: 1rem;
+    font-weight: 500;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.author-credit a {
+    font-weight: bold;
+    color: #7fdbff;
+}
+
+.author-credit a:hover {
+    color: white;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     header h1 {
