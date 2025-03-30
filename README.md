@@ -1,5 +1,11 @@
 # Docker 101
 
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-green.svg)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/Express-4.18.2-blue.svg)](https://expressjs.com/)
+[![Docker](https://img.shields.io/badge/Docker-latest-blue.svg)](https://www.docker.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub last commit](https://img.shields.io/github/last-commit/alanceloth/docker_101.svg)](https://github.com/alanceloth/docker_101/commits/master)
+
 Um projeto educacional sobre Docker para iniciantes. Este site apresenta conceitos básicos do Docker, seus benefícios e exemplos práticos de uso.
 
 ## Conteúdo
@@ -8,11 +14,23 @@ Um projeto educacional sobre Docker para iniciantes. Este site apresenta conceit
 - Para que serve Docker
 - Benefícios do uso de Docker
 - Problemas que o Docker resolve
-- Exemplos práticos de uso do Docker:
-  1. Aplicação web simples
-  2. Banco de dados
-  3. Ambiente de desenvolvimento
-  4. Aplicação multi-container com Docker Compose
+- Exemplos práticos de uso do Docker focados em ciência de dados:
+  1. Dashboard de dados com Streamlit
+  2. API de dados com FastAPI
+  3. Banco de dados PostgreSQL
+  4. Aplicação completa de análise de dados com Docker Compose
+
+## Tecnologias
+
+- ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+- ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+- ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+- ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+- ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+- ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+- ![Streamlit](https://img.shields.io/badge/streamlit-%23FF4B4B.svg?style=for-the-badge&logo=streamlit&logoColor=white)
+- ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
+- ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 
 ## Como executar o projeto
 
@@ -99,70 +117,18 @@ Depois de instalar o Node.js e o npm, siga estes passos para executar o projeto:
 
 5. Abra seu navegador em `http://localhost:3000` para ver o conteúdo.
 
-6. Para encerrar o servidor, pressione `Ctrl+C` no terminal onde o servidor está rodando.
+## Exemplos com Docker
 
-## Aprendendo Docker
+Para executar os exemplos de Docker apresentados no tutorial, você precisa ter o Docker instalado em seu sistema:
 
-Este projeto inclui exemplos práticos de uso do Docker. Para executar esses exemplos, você precisará instalar o Docker em sua máquina.
+- [Instalação do Docker para Windows](https://docs.docker.com/desktop/install/windows-install/)
+- [Instalação do Docker para macOS](https://docs.docker.com/desktop/install/mac-install/)
+- [Instalação do Docker para Linux](https://docs.docker.com/engine/install/)
 
-### Instalando o Docker
+## Autor
 
-#### Windows
-1. Acesse [Docker Desktop para Windows](https://www.docker.com/products/docker-desktop)
-2. Baixe o instalador e siga as instruções
-3. O Docker Desktop inclui o Docker Engine, o cliente Docker CLI, Docker Compose e outras ferramentas
+[![Alan Lanceloth](https://img.shields.io/badge/Alan%20Lanceloth-GitHub-black.svg)](https://github.com/alanceloth/)
 
-#### macOS
-1. Acesse [Docker Desktop para Mac](https://www.docker.com/products/docker-desktop)
-2. Baixe a versão compatível com seu Mac (Intel ou Apple Silicon)
-3. Instale normalmente arrastando para a pasta Applications
+## Licença
 
-#### Linux
-As instruções variam dependendo da distribuição. Consulte a [documentação oficial](https://docs.docker.com/engine/install/) para detalhes completos.
-
-Para Ubuntu:
-```bash
-# Atualizar os repositórios
-sudo apt update
-
-# Instalar dependências
-sudo apt install apt-transport-https ca-certificates curl software-properties-common
-
-# Adicionar chave GPG do Docker
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-
-# Adicionar repositório do Docker
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-
-# Atualizar o banco de dados de pacotes
-sudo apt update
-
-# Instalar Docker
-sudo apt install docker-ce
-
-# Adicionar seu usuário ao grupo docker (para não precisar usar sudo)
-sudo usermod -aG docker $USER
-
-# Necessário fazer logout e login novamente para que as mudanças sejam aplicadas
-```
-
-## Resolução de problemas
-
-### Porta 3000 já em uso
-Se ao iniciar o servidor você receber um erro dizendo que a porta 3000 já está em uso, você pode:
-
-1. Encerrar o processo que está usando a porta 3000, ou
-2. Mudar a porta usada pelo servidor editando o arquivo `server.js` e modificando a variável `PORT`
-
-### Dependências não instaladas corretamente
-Se você encontrar erros relacionados a dependências, tente:
-
-```bash
-# Limpar o cache do npm
-npm cache clean --force
-
-# Remover a pasta node_modules e o arquivo package-lock.json
-rm -rf node_modules package-lock.json
-
-# Instalar novamente
-npm install
+Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
