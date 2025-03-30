@@ -23,6 +23,7 @@
     <nav>
         <div class="container">
             <ul>
+                <li><a href="#o-que-sao-containers">O que são Containers</a></li>
                 <li><a href="#o-que-e">O que é Docker</a></li>
                 <li><a href="#para-que-serve">Para que serve</a></li>
                 <li><a href="#beneficios">Benefícios</a></li>
@@ -33,6 +34,39 @@
     </nav>
 
     <main class="container">
+        <section id="o-que-sao-containers">
+            <h2>O que são Containers</h2>
+            <div class="content-box">
+                <p>Antes de entendermos o Docker, precisamos compreender o conceito fundamental de <strong>containers</strong>.</p>
+                
+                <p>Um <strong>container</strong> é uma unidade padronizada de software que empacota o código e todas as suas dependências, permitindo que a aplicação seja executada de forma rápida e confiável de um ambiente computacional para outro.</p>
+
+                <div class="container-explanation">
+                    <div class="container-points">
+                        <h3>Características dos Containers:</h3>
+                        <ul>
+                            <li><strong>Isolamento</strong>: Cada container opera de forma independente, sem interferir em outros containers ou no sistema hospedeiro</li>
+                            <li><strong>Portabilidade</strong>: Executa o mesmo em qualquer ambiente, seja um notebook, servidor ou nuvem</li>
+                            <li><strong>Eficiência</strong>: Compartilha o kernel do sistema operacional hospedeiro, tornando-os mais leves que máquinas virtuais</li>
+                            <li><strong>Consistência</strong>: Garante que o software sempre execute da mesma maneira, independentemente do ambiente</li>
+                        </ul>
+                    </div>
+                    <div class="container-metaphor">
+                        <h3>Uma analogia prática:</h3>
+                        <p>Pense em containers como <strong>contêineres de carga</strong> (daí o nome) usados para transporte marítimo:</p>
+                        <ul>
+                            <li>Cada contêiner tem um <strong>formato padronizado</strong> que se encaixa em qualquer navio de carga, caminhão ou trem</li>
+                            <li>O que está <strong>dentro do contêiner</strong> não importa para o sistema de transporte</li>
+                            <li>O conteúdo está <strong>isolado e protegido</strong> durante todo o transporte</li>
+                            <li>Diferentes contêineres podem transportar <strong>diferentes tipos de carga</strong>, mas são manipulados da mesma forma</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <p>Na tecnologia, containers solucionam o problema de "funciona na minha máquina", pois garantem que o ambiente de execução seja o mesmo em qualquer lugar. Um container inclui tudo que o aplicativo precisa para funcionar: código, runtime, bibliotecas, variáveis de ambiente, arquivos de configuração, etc.</p>
+            </div>
+        </section>
+
         <section id="o-que-e">
             <h2>O que é Docker</h2>
             <div class="content-box">
