@@ -756,9 +756,9 @@ CMD ["streamlit", "run", "app.py", "--server.address=0.0.0.0"]</code></pre>
                     </div>
                     <div id="exemplo1-comandos" class="tab-content">
                         <pre><code class="language-bash"># Criar o arquivo requirements.txt
-echo "streamlit==1.31.0
-pandas==2.1.0
-matplotlib==3.8.0" > requirements.txt
+echo "streamlit==1.44.0
+pandas==2.2.3
+matplotlib==3.10.1" > requirements.txt
 
 # Construir a imagem Docker
 docker build -t dashboard-vendas .
@@ -892,10 +892,10 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</code></pre>
                     </div>
                     <div id="exemplo2-comandos" class="tab-content">
                         <pre><code class="language-bash"># Criar o arquivo requirements.txt
-echo "fastapi==0.104.0
-uvicorn==0.23.2
-pandas==2.1.0
-pydantic==2.4.2" > requirements.txt
+echo "fastapi==0.115.12
+uvicorn==0.34.0
+pandas==2.2.3
+pydantic==2.11.1" > requirements.txt
 
 # Construir a imagem Docker
 docker build -t api-vendas .
@@ -1364,11 +1364,11 @@ EOF
 
 # Requisitos para a API
 cat > api/requirements.txt << 'EOF'
-fastapi==0.104.0
-uvicorn==0.23.2
+fastapi==0.115.12
+uvicorn==0.34.0
+pydantic==2.11.1
 sqlalchemy==2.0.22
 psycopg2-binary==2.9.9
-pydantic==2.4.2
 EOF
 
 # Criar Dockerfile para o Dashboard
@@ -1387,8 +1387,8 @@ EOF
 
 # Requisitos para o Dashboard
 cat > dashboard/requirements.txt << 'EOF'
-streamlit==1.31.0
-pandas==2.1.0
+streamlit==1.44.0
+pandas==2.2.3
 plotly==5.18.0
 requests==2.31.0
 EOF
