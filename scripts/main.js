@@ -15,36 +15,78 @@ function setupTabs() {
     // pois são adicionados diretamente no HTML via onclick
 }
 
-// Função para mostrar a aba selecionada
+// Função para alternar entre abas de conteúdo
 function showTab(tabId) {
-    // Encontrar o container pai da aba
-    const tabContent = document.getElementById(tabId);
-    if (!tabContent) return;
-    
-    // Encontrar todos os conteúdos de aba no mesmo grupo
-    const parentExample = tabContent.closest('.example');
-    const allTabContents = parentExample.querySelectorAll('.tab-content');
-    const allTabButtons = parentExample.querySelectorAll('.tab-button');
-    
-    // Esconder todos os conteúdos de aba
-    allTabContents.forEach(tab => {
+    // Ocultar todas as abas de conteúdo
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabContents.forEach(tab => {
         tab.classList.remove('active');
     });
     
-    // Desativar todos os botões de aba
-    allTabButtons.forEach(button => {
+    // Mostrar a aba selecionada
+    const selectedTab = document.getElementById(tabId);
+    if (selectedTab) {
+        selectedTab.classList.add('active');
+    }
+    
+    // Atualizar os botões de aba
+    const tabButtons = document.querySelectorAll('.tab-button');
+    tabButtons.forEach(button => {
         button.classList.remove('active');
+        if (button.getAttribute('onclick').includes(tabId)) {
+            button.classList.add('active');
+        }
+    });
+}
+
+// Função para alternar entre distribuições Linux
+function showLinuxDistro(distroId) {
+    // Ocultar todas as distribuições
+    const distros = document.querySelectorAll('.linux-distro');
+    distros.forEach(distro => {
+        distro.classList.remove('active');
     });
     
-    // Mostrar a aba selecionada
-    tabContent.classList.add('active');
-    
-    // Ativar o botão correspondente
-    const tabButton = parentExample.querySelector(`button[onclick="showTab('${tabId}')"]`);
-    if (tabButton) {
-        tabButton.classList.add('active');
+    // Mostrar a distribuição selecionada
+    const selectedDistro = document.getElementById(distroId);
+    if (selectedDistro) {
+        selectedDistro.classList.add('active');
     }
+    
+    // Atualizar os botões de distribuição
+    const distroButtons = document.querySelectorAll('.distro-button');
+    distroButtons.forEach(button => {
+        button.classList.remove('active');
+        if (button.getAttribute('onclick').includes(distroId)) {
+            button.classList.add('active');
+        }
+    });
 }
+
+// Inicializar a página quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar as abas com a primeira aba ativa
+    const firstTabButtons = document.querySelectorAll('.code-tabs .tab-button:first-child');
+    firstTabButtons.forEach(button => {
+        if (!button.classList.contains('active')) {
+            const onclickValue = button.getAttribute('onclick');
+            if (onclickValue) {
+                const tabId = onclickValue.replace("showTab('", "").replace("')", "");
+                showTab(tabId);
+            }
+        }
+    });
+    
+    // Inicializar as abas de distribuição Linux (se existirem)
+    const distroButtons = document.querySelectorAll('.distro-button.active');
+    distroButtons.forEach(button => {
+        const onclickValue = button.getAttribute('onclick');
+        if (onclickValue) {
+            const distroId = onclickValue.replace("showLinuxDistro('", "").replace("')", "");
+            showLinuxDistro(distroId);
+        }
+    });
+});
 
 // Configurar rolagem suave para links de âncora
 function setupSmoothScroll() {

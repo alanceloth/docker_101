@@ -536,65 +536,78 @@ section h2 {
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
-pre {
-    position: relative;
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    background-color: #282c34;
-    padding: 1rem;
-    overflow-x: auto;
+/* Estilos para blocos de código */
+pre,
+pre code,
+.linux-distro pre,
+.linux-distro pre code,
+.tab-content pre,
+.tab-content pre code,
+.installation-guide pre,
+.installation-guide pre code,
+#ubuntu-install pre, 
+#fedora-install pre,
+#debian-install pre,
+#centos-install pre,
+#ubuntu-install pre code,
+#fedora-install pre code,
+#debian-install pre code,
+#centos-install pre code,
+.step pre,
+.step pre code {
+    background-color: #282c34 !important;
+    color: #e3e3e3 !important;
+    border-radius: 6px !important;
+    position: relative !important;
 }
 
-pre.has-copy-button {
-    padding-top: 10px;
+pre code,
+.linux-distro pre code,
+.tab-content pre code,
+.installation-guide pre code,
+#ubuntu-install pre code,
+#fedora-install pre code,
+#debian-install pre code,
+#centos-install pre code,
+.step pre code {
+    display: block !important;
+    padding: 15px !important;
+    overflow-x: auto !important;
+    line-height: 1.6 !important;
+    font-family: 'Consolas', monospace !important;
 }
 
 .copy-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    border: none;
-    background-color: #0db7ed;
-    color: white;
-    padding: 4px 8px;
-    font-size: 12px;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    opacity: 0.8;
-    z-index: 100;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    position: absolute !important;
+    top: 5px !important;
+    right: 5px !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    color: #e3e3e3 !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+    cursor: pointer !important;
+    z-index: 100 !important;
+    transition: all 0.2s ease !important;
 }
 
 .copy-button:hover {
-    opacity: 1;
-    background-color: #0096cb;
+    background-color: rgba(255, 255, 255, 0.25) !important;
 }
 
 .copy-button.copied {
-    background-color: #4CAF50;
+    background-color: #28a745 !important;
+    color: white !important;
 }
 
-code {
-    font-family: 'Consolas', 'Monaco', monospace;
-}
-
-pre code {
-    display: block;
-    padding: 15px;
-    line-height: 1.5;
-    overflow-x: auto;
-}
-
-.tab-content pre {
-    margin: 0;
-    border-radius: 0 0 6px 6px;
-}
-
-.code-tabs + .tab-content pre.has-copy-button {
-    padding-top: 35px;
+code:not(pre code) {
+    background-color: #f0f0f0;
+    color: #d35400;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-family: 'Consolas', monospace;
+    font-size: 0.9em;
 }
 
 .hljs {
@@ -678,6 +691,32 @@ pre code {
     border-top: 1px solid #eee;
 }
 
+/* Corrigindo especificamente os blocos de código nas distribuições Linux */
+.linux-distro pre,
+.linux-distro pre code,
+#ubuntu-install pre, 
+#fedora-install pre,
+#debian-install pre,
+#centos-install pre,
+#ubuntu-install pre code,
+#fedora-install pre code,
+#debian-install pre code,
+#centos-install pre code {
+    background-color: #282c34 !important;
+    color: #e3e3e3 !important;
+    border-radius: 6px;
+}
+
+.linux-distro pre code,
+#ubuntu-install pre code,
+#fedora-install pre code,
+#debian-install pre code,
+#centos-install pre code {
+    padding: 15px !important;
+    display: block !important;
+    overflow-x: auto !important;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     header h1 {
@@ -744,4 +783,111 @@ footer a:hover {
 
 .author-credit a:hover {
     color: white;
+}
+
+/* Estilos para o guia de instalação do Docker */
+.installation-guide {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.step {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #e0e0e0;
+}
+
+.step:last-child {
+    border-bottom: none;
+}
+
+.step h4, .step h5 {
+    color: #1d63af;
+    margin-bottom: 15px;
+}
+
+.step ol, .step ul {
+    padding-left: 25px;
+    margin-top: 10px;
+}
+
+.step li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.step code {
+    background-color: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Consolas', monospace;
+    color: #d35400;
+}
+
+.os-tabs {
+    margin-bottom: 20px;
+}
+
+.os-tabs .tab-button {
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.linux-distro-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.distro-button {
+    padding: 8px 15px;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.distro-button:hover {
+    background-color: #d0d0d0;
+}
+
+.distro-button.active {
+    background-color: #0db7ed;
+    color: white;
+}
+
+.linux-distro {
+    display: none;
+    padding: 15px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.linux-distro.active {
+    display: block;
+}
+
+/* Estilos específicos para comandos no guia de instalação */
+.installation-guide pre {
+    margin-top: 10px;
+    background-color: #282c34;
+    border-radius: 5px;
+    position: relative;
+}
+
+.installation-guide pre code {
+    color: #e3e3e3;
+    display: block;
+    padding: 15px;
+    overflow-x: auto;
+    line-height: 1.6;
 }

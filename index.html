@@ -6,6 +6,17 @@
     <title>Docker 101 - Aprenda o básico sobre Docker</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <!-- Forçar estilo para os blocos de código -->
+    <style>
+        pre, pre code, .linux-distro pre, .linux-distro pre code {
+            background-color: #282c34 !important;
+            color: #e3e3e3 !important;
+        }
+        .language-bash, .language-dockerfile, .language-python, .language-javascript, .language-json, .language-sql {
+            background-color: #282c34 !important;
+            color: #e3e3e3 !important;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -30,6 +41,7 @@
                 <li><a href="#beneficios">Benefícios</a></li>
                 <li><a href="#problemas">Problemas resolvidos</a></li>
                 <li><a href="#exemplos">Exemplos</a></li>
+                <li><a href="#instalacao-docker">Instalando o Docker</a></li>
             </ul>
         </div>
     </nav>
@@ -290,6 +302,380 @@
             </div>
         </section>
 
+        <section id="instalacao-docker">
+            <h2>Instalando o Docker</h2>
+            
+            <p>Para aproveitar ao máximo este tutorial e executar os exemplos, você precisará ter o Docker instalado em seu computador. Siga o passo a passo abaixo conforme seu sistema operacional:</p>
+            
+            <div class="code-tabs os-tabs">
+                <button class="tab-button active" onclick="showTab('windows-install')">Windows</button>
+                <button class="tab-button" onclick="showTab('mac-install')">macOS</button>
+                <button class="tab-button" onclick="showTab('linux-install')">Linux</button>
+            </div>
+            
+            <div id="windows-install" class="tab-content active">
+                <div class="installation-guide">
+                    <h3>Instalação do Docker no Windows</h3>
+                    
+                    <div class="step">
+                        <h4>Passo 1: Verificar requisitos do sistema</h4>
+                        <p>Antes de começar, certifique-se de que seu sistema atende aos requisitos mínimos:</p>
+                        <ul>
+                            <li>Windows 10 64-bit: Pro, Enterprise, ou Education (Build 16299 ou posterior)</li>
+                            <li>Ativar o recurso Hyper-V e Containers do Windows</li>
+                            <li>Virtualização habilitada na BIOS/UEFI</li>
+                        </ul>
+                        <p>Se você estiver usando o Windows 10 Home, será necessário usar o Docker Toolbox ou atualizar para Windows 10 Pro.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>Passo 2: Baixar o Docker Desktop</h4>
+                        <ol>
+                            <li>Visite a <a href="https://www.docker.com/products/docker-desktop" target="_blank">página de download do Docker Desktop</a></li>
+                            <li>Clique no botão "Download for Windows"</li>
+                            <li>Aguarde o download do arquivo "Docker Desktop Installer.exe"</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>Passo 3: Instalar o Docker Desktop</h4>
+                        <ol>
+                            <li>Localize o arquivo baixado e dê um duplo clique para iniciar a instalação</li>
+                            <li>Quando solicitado, verifique se as opções "Use WSL 2 instead of Hyper-V" e "Add shortcut to desktop" estão marcadas</li>
+                            <li>Clique em "Ok" para iniciar a instalação</li>
+                            <li>Aguarde a conclusão da instalação</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>Passo 4: Iniciar o Docker Desktop</h4>
+                        <ol>
+                            <li>Após a instalação, o Docker Desktop pode iniciar automaticamente. Caso contrário, procure por "Docker Desktop" no menu Iniciar e clique nele</li>
+                            <li>Na primeira execução, pode levar alguns minutos para iniciar</li>
+                            <li>Quando solicitado, aceite os termos de serviço</li>
+                            <li>Você notará o ícone do Docker na área de notificação (bandeja do sistema) quando estiver em execução</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>Passo 5: Verificar a instalação</h4>
+                        <ol>
+                            <li>Abra o Prompt de Comando ou PowerShell</li>
+                            <li>Digite o comando: <code>docker --version</code> e pressione Enter</li>
+                            <li>Você deverá ver a versão do Docker instalada, como: <code>Docker version 20.10.14, build a224086</code></li>
+                            <li>Para verificar se o Docker está funcionando corretamente, execute: <code>docker run hello-world</code></li>
+                        </ol>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>Possíveis problemas e soluções</h4>
+                        <ul>
+                            <li><strong>Erro de virtualização:</strong> Certifique-se de que a virtualização está habilitada na BIOS/UEFI do seu computador</li>
+                            <li><strong>WSL 2 não instalado:</strong> Siga as instruções do instalador para instalar o WSL 2</li>
+                            <li><strong>Conflitos de porta:</strong> Se outros serviços estiverem usando as portas necessárias, o Docker pode não iniciar corretamente</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="mac-install" class="tab-content">
+                <div class="installation-guide">
+                    <h3>Instalação do Docker no macOS</h3>
+                    
+                    <div class="step">
+                        <h4>Passo 1: Verificar requisitos do sistema</h4>
+                        <p>Antes de começar, certifique-se de que seu Mac atende aos requisitos mínimos:</p>
+                        <ul>
+                            <li>macOS 10.15 (Catalina) ou mais recente</li>
+                            <li>Para Macs com chip Apple Silicon (M1/M2): macOS 11 (Big Sur) ou mais recente</li>
+                            <li>Pelo menos 4 GB de RAM</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>Passo 2: Baixar o Docker Desktop</h4>
+                        <ol>
+                            <li>Visite a <a href="https://www.docker.com/products/docker-desktop" target="_blank">página de download do Docker Desktop</a></li>
+                            <li>Clique no botão "Download for Mac"</li>
+                            <li>Selecione a versão apropriada para seu Mac:
+                                <ul>
+                                    <li>Para Macs com processador Intel: "Mac with Intel chip"</li>
+                                    <li>Para Macs com chip Apple Silicon: "Mac with Apple chip"</li>
+                                </ul>
+                            </li>
+                            <li>Aguarde o download do arquivo .dmg</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>Passo 3: Instalar o Docker Desktop</h4>
+                        <ol>
+                            <li>Localize o arquivo .dmg baixado e dê um duplo clique para abri-lo</li>
+                            <li>Arraste o ícone do Docker para a pasta Applications, como indicado</li>
+                            <li>Acesse a pasta Applications e dê um duplo clique no ícone do Docker para iniciá-lo</li>
+                            <li>Quando solicitado, insira sua senha de administrador</li>
+                            <li>Leia e aceite os termos de serviço</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>Passo 4: Configurar o Docker Desktop</h4>
+                        <ol>
+                            <li>Na primeira execução, o Docker solicitará permissões. Clique em "Ok" para permitir</li>
+                            <li>Aguarde o Docker iniciar (o ícone na barra de menu superior mostrará que está em execução)</li>
+                            <li>Você pode acessar as configurações clicando no ícone do Docker na barra de menu e selecionando "Preferences"</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>Passo 5: Verificar a instalação</h4>
+                        <ol>
+                            <li>Abra o Terminal</li>
+                            <li>Digite o comando: <code>docker --version</code> e pressione Enter</li>
+                            <li>Você deverá ver a versão do Docker instalada</li>
+                            <li>Para verificar se o Docker está funcionando corretamente, execute: <code>docker run hello-world</code></li>
+                        </ol>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>Possíveis problemas e soluções</h4>
+                        <ul>
+                            <li><strong>Falha ao iniciar:</strong> Verifique as permissões de sistema no painel de Segurança e Privacidade das Preferências do Sistema</li>
+                            <li><strong>Desempenho lento:</strong> Nas preferências do Docker, ajuste a quantidade de recursos (memória/CPU) alocados</li>
+                            <li><strong>Para Apple Silicon:</strong> Alguns contêineres ainda não são nativos para ARM64, então você pode encontrar problemas de compatibilidade com imagens mais antigas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="linux-install" class="tab-content">
+                <div class="installation-guide">
+                    <h3>Instalação do Docker no Linux</h3>
+                    
+                    <p>Selecione sua distribuição Linux:</p>
+                    <div class="linux-distro-buttons">
+                        <button class="distro-button active" onclick="showLinuxDistro('ubuntu-install')">Ubuntu</button>
+                        <button class="distro-button" onclick="showLinuxDistro('fedora-install')">Fedora</button>
+                        <button class="distro-button" onclick="showLinuxDistro('debian-install')">Debian</button>
+                        <button class="distro-button" onclick="showLinuxDistro('centos-install')">CentOS</button>
+                    </div>
+                    
+                    <div id="ubuntu-install" class="linux-distro active">
+                        <div class="step">
+                            <h4>Passo 1: Atualizar o sistema</h4>
+                            <p>Certifique-se de que seu sistema está atualizado:</p>
+                            <pre><code class="language-bash">sudo apt update
+sudo apt upgrade -y</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 2: Instalar dependências necessárias</h4>
+                            <p>Instale os pacotes necessários para permitir o uso de repositórios HTTPS:</p>
+                            <pre><code class="language-bash">sudo apt install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 3: Adicionar a chave GPG oficial do Docker</h4>
+                            <pre><code class="language-bash">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 4: Adicionar o repositório do Docker</h4>
+                            <pre><code class="language-bash">echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 5: Instalar o Docker Engine</h4>
+                            <pre><code class="language-bash">sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 6: Verificar a instalação</h4>
+                            <pre><code class="language-bash">sudo docker run hello-world</code></pre>
+                            <p>Se tudo estiver correto, você verá uma mensagem de confirmação.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 7: Configurar permissões (opcional, mas recomendado)</h4>
+                            <p>Para usar o Docker sem precisar do sudo, adicione seu usuário ao grupo docker:</p>
+                            <pre><code class="language-bash">sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 8: Configurar para iniciar com o sistema</h4>
+                            <pre><code class="language-bash">sudo systemctl enable docker</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div id="fedora-install" class="linux-distro">
+                        <div class="step">
+                            <h4>Passo 1: Atualizar o sistema</h4>
+                            <p>Certifique-se de que seu sistema está atualizado:</p>
+                            <pre><code class="language-bash">sudo dnf update -y</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 2: Adicionar o repositório Docker</h4>
+                            <pre><code class="language-bash">sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 3: Instalar o Docker Engine</h4>
+                            <pre><code class="language-bash">sudo dnf install -y docker-ce docker-ce-cli containerd.io</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 4: Iniciar o serviço Docker</h4>
+                            <pre><code class="language-bash">sudo systemctl start docker</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 5: Verificar a instalação</h4>
+                            <pre><code class="language-bash">sudo docker run hello-world</code></pre>
+                            <p>Se tudo estiver correto, você verá uma mensagem de confirmação.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 6: Configurar permissões (opcional, mas recomendado)</h4>
+                            <p>Para usar o Docker sem precisar do sudo, adicione seu usuário ao grupo docker:</p>
+                            <pre><code class="language-bash">sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 7: Configurar para iniciar com o sistema</h4>
+                            <pre><code class="language-bash">sudo systemctl enable docker</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div id="debian-install" class="linux-distro">
+                        <div class="step">
+                            <h4>Passo 1: Atualizar o sistema</h4>
+                            <p>Certifique-se de que seu sistema está atualizado:</p>
+                            <pre><code class="language-bash">sudo apt update
+sudo apt upgrade -y</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 2: Instalar dependências necessárias</h4>
+                            <p>Instale os pacotes necessários para permitir o uso de repositórios HTTPS:</p>
+                            <pre><code class="language-bash">sudo apt install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 3: Adicionar a chave GPG oficial do Docker</h4>
+                            <pre><code class="language-bash">curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 4: Adicionar o repositório do Docker</h4>
+                            <pre><code class="language-bash">echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 5: Instalar o Docker Engine</h4>
+                            <pre><code class="language-bash">sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 6: Verificar a instalação</h4>
+                            <pre><code class="language-bash">sudo docker run hello-world</code></pre>
+                            <p>Se tudo estiver correto, você verá uma mensagem de confirmação.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 7: Configurar permissões (opcional, mas recomendado)</h4>
+                            <p>Para usar o Docker sem precisar do sudo, adicione seu usuário ao grupo docker:</p>
+                            <pre><code class="language-bash">sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 8: Configurar para iniciar com o sistema</h4>
+                            <pre><code class="language-bash">sudo systemctl enable docker</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div id="centos-install" class="linux-distro">
+                        <div class="step">
+                            <h4>Passo 1: Atualizar o sistema</h4>
+                            <p>Certifique-se de que seu sistema está atualizado:</p>
+                            <pre><code class="language-bash">sudo yum update -y</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 2: Instalar utilitários necessários</h4>
+                            <pre><code class="language-bash">sudo yum install -y yum-utils</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 3: Adicionar o repositório Docker</h4>
+                            <pre><code class="language-bash">sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 4: Instalar o Docker Engine</h4>
+                            <pre><code class="language-bash">sudo yum install -y docker-ce docker-ce-cli containerd.io</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 5: Iniciar o serviço Docker</h4>
+                            <pre><code class="language-bash">sudo systemctl start docker</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 6: Verificar a instalação</h4>
+                            <pre><code class="language-bash">sudo docker run hello-world</code></pre>
+                            <p>Se tudo estiver correto, você verá uma mensagem de confirmação.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 7: Configurar permissões (opcional, mas recomendado)</h4>
+                            <p>Para usar o Docker sem precisar do sudo, adicione seu usuário ao grupo docker:</p>
+                            <pre><code class="language-bash">sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker</code></pre>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Passo 8: Configurar para iniciar com o sistema</h4>
+                            <pre><code class="language-bash">sudo systemctl enable docker</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>Problemas comuns na instalação do Docker no Linux</h4>
+                        <ul>
+                            <li><strong>Permissões negadas:</strong> Se você encontrar erros de permissão ao tentar executar comandos Docker, certifique-se de que adicionou seu usuário ao grupo docker e reiniciou a sessão</li>
+                            <li><strong>Conflitos de porta:</strong> O Docker usa várias portas para seus serviços. Certifique-se de que essas portas não estejam sendo usadas por outros serviços</li>
+                            <li><strong>Falha ao iniciar o daemon:</strong> Verifique os logs com <code>sudo journalctl -u docker.service</code> para identificar o problema</li>
+                            <li><strong>Versões incompatíveis:</strong> Certifique-se de que todas as partes do Docker (Docker Engine, containerd, etc.) sejam de versões compatíveis</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="exemplos">
             <h2>Exemplos práticos de uso do Docker</h2>
             
@@ -409,6 +795,8 @@ docker run -p 8501:8501 -d --name streamlit-app dashboard-vendas
 from fastapi import FastAPI, Query, Body
 from pydantic import BaseModel
 from typing import List, Optional
+import os
+from datetime import date
 import pandas as pd
 
 app = FastAPI(title="API de Dados de Vendas")
@@ -468,9 +856,7 @@ def get_produto(produto_id: int):
         return produto.iloc[0].to_dict()
     return {"erro": "Produto não encontrado"}
 
-# NOTA: Apenas no Docker Compose teremos a funcionalidade POST
-# abaixo está um exemplo de como seria implementado
-"""
+# Endpoint para inserir novos dados - disponível apenas no Docker Compose
 @app.post("/produtos", response_model=Produto)
 def create_produto(produto: ProdutoCreate):
     # No exemplo do Docker Compose, este método salvaria no PostgreSQL
@@ -483,8 +869,7 @@ def create_produto(produto: ProdutoCreate):
     }
     
     vendas_df = pd.concat([vendas_df, pd.DataFrame([novo_produto])])
-    return novo_produto
-"""</code></pre>
+    return novo_produto</code></pre>
                     </div>
                     <div id="exemplo2-dockerfile" class="tab-content">
                         <pre><code class="language-dockerfile"># Dockerfile
@@ -963,11 +1348,17 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
+# Copiar e instalar dependências
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copiar código
 COPY . .
 
+# Expor porta para a API
+EXPOSE 8000
+
+# Iniciar API com Uvicorn
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 EOF
 
