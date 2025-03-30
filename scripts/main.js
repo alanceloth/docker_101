@@ -17,26 +17,43 @@ function setupTabs() {
 
 // Função para alternar entre abas de conteúdo
 function showTab(tabId) {
-    // Ocultar todas as abas de conteúdo
-    const tabContents = document.querySelectorAll('.tab-content');
+    // Encontrar o elemento da aba
+    const selectedTab = document.getElementById(tabId);
+    if (!selectedTab) return;
+    
+    // Determinar o tipo de aba e encontrar o contexto apropriado
+    let context;
+    if (tabId.includes('install')) {
+        // Para abas de instalação (Windows/macOS/Linux)
+        context = document.querySelector('.os-tabs').parentElement;
+    } else if (selectedTab.closest('.example')) {
+        // Para abas de exemplos
+        context = selectedTab.closest('.example');
+    } else {
+        // Fallback para outros casos
+        context = selectedTab.parentElement;
+    }
+    
+    // Ocultar todas as abas de conteúdo no mesmo contexto
+    const tabContents = context.querySelectorAll('.tab-content');
     tabContents.forEach(tab => {
         tab.classList.remove('active');
     });
     
-    // Mostrar a aba selecionada
-    const selectedTab = document.getElementById(tabId);
-    if (selectedTab) {
-        selectedTab.classList.add('active');
-    }
-    
-    // Atualizar os botões de aba
-    const tabButtons = document.querySelectorAll('.tab-button');
+    // Desativar todos os botões de aba no mesmo contexto
+    const tabButtons = context.querySelectorAll('.tab-button');
     tabButtons.forEach(button => {
         button.classList.remove('active');
-        if (button.getAttribute('onclick').includes(tabId)) {
-            button.classList.add('active');
-        }
     });
+    
+    // Mostrar a aba selecionada
+    selectedTab.classList.add('active');
+    
+    // Ativar o botão correspondente
+    const tabButton = context.querySelector(`button[onclick*="'${tabId}'"]`);
+    if (tabButton) {
+        tabButton.classList.add('active');
+    }
 }
 
 // Função para alternar entre distribuições Linux

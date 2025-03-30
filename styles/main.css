@@ -536,6 +536,25 @@ section h2 {
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Garantir que os exemplos estejam expandidos por padrão */
+.example .content-box {
+    display: block;
+    margin-bottom: 30px;
+    overflow: visible;
+}
+
+.example .code-tabs {
+    display: flex;
+}
+
+.example .tab-content {
+    display: none;
+}
+
+.example .tab-content.active {
+    display: block;
+}
+
 /* Estilos para blocos de código */
 pre,
 pre code,
