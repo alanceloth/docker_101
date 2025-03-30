@@ -1,0 +1,338 @@
+:root {
+    --primary-color: #2496ed;
+    --secondary-color: #0db7ed;
+    --dark-color: #13353a;
+    --light-color: #f5f7fa;
+    --text-color: #333;
+    --border-radius: 5px;
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--light-color);
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+header .subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* Navigation */
+nav {
+    background-color: var(--dark-color);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav ul {
+    display: flex;
+    list-style-type: none;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+nav ul li {
+    margin: 0 1rem;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s;
+}
+
+nav ul li a:hover {
+    border-color: var(--secondary-color);
+}
+
+/* Main content */
+main {
+    padding: 2rem 0;
+}
+
+section {
+    margin-bottom: 3rem;
+}
+
+section h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.content-box {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
+}
+
+.content-box p, .content-box ul {
+    margin-bottom: 1rem;
+}
+
+.content-box ul {
+    padding-left: 1.5rem;
+}
+
+.image-container {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.content-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.caption {
+    margin-top: 0.5rem;
+    font-style: italic;
+    color: #666;
+}
+
+/* Cards for benefits */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Problem-Solution Sections */
+.problem-solution {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.problem, .solution {
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+}
+
+.problem {
+    background-color: #fff5f5;
+    border-left: 4px solid #fc8181;
+}
+
+.solution {
+    background-color: #f0fff4;
+    border-left: 4px solid #68d391;
+}
+
+.problem h3, .solution h3 {
+    margin-bottom: 1rem;
+}
+
+/* Examples */
+.example {
+    margin-bottom: 3rem;
+}
+
+.example h3 {
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+}
+
+.code-tabs {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.tab-button {
+    padding: 0.5rem 1rem;
+    background-color: #f5f5f5;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.tab-button.active {
+    background-color: var(--secondary-color);
+    color: white;
+    border-bottom-color: var(--primary-color);
+}
+
+.tab-content {
+    display: none;
+    margin-bottom: 1.5rem;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+pre {
+    background-color: #282c34;
+    border-radius: var(--border-radius);
+    margin: 0;
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+.hljs {
+    color: #e3e3e3; /* Cor de texto mais clara para melhor contraste */
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-section,
+.hljs-link,
+.hljs-doctag {
+    color: #c678dd; /* Roxo mais claro */
+}
+
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class {
+    color: #61afef; /* Azul mais claro */
+}
+
+.hljs-attribute,
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-class .hljs-title,
+.hljs-type {
+    color: #e6c07b; /* Amarelo mais claro */
+}
+
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition,
+.hljs-code,
+.hljs-title.function_,
+.hljs-built_in {
+    color: #98c379; /* Verde mais claro */
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-deletion,
+.hljs-meta {
+    color: #a0a0a0; /* Cinza médio para comentários */
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-title,
+.hljs-section {
+    font-weight: bold;
+}
+
+.language-dockerfile {
+    color: #ffffff; /* Branco puro para o texto normal */
+    font-weight: 500; /* Texto um pouco mais grosso */
+}
+
+.language-dockerfile .hljs-keyword {
+    color: #00ffff; /* Ciano brilhante para palavras-chave */
+    font-weight: bold;
+}
+
+.language-dockerfile .hljs-string {
+    color: #adff2f; /* Verde limão para strings */
+}
+
+.language-dockerfile .hljs-built_in {
+    color: #ff6e67; /* Vermelho mais brilhante */
+    font-weight: bold;
+}
+
+.language-dockerfile .hljs-comment {
+    color: #d4d4d4; /* Cinza claro para comentários */
+}
+
+.example-description {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+/* Footer */
+footer {
+    background-color: var(--dark-color);
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .problem-solution {
+        grid-template-columns: 1fr;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    nav ul li {
+        margin: 0.5rem 0;
+    }
+}

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker 101 - Aprenda o básico sobre Docker</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Docker 101</h1>
+            <p class="subtitle">Um guia para iniciantes sobre containerização</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#o-que-e">O que é Docker</a></li>
+                <li><a href="#para-que-serve">Para que serve</a></li>
+                <li><a href="#beneficios">Benefícios</a></li>
+                <li><a href="#problemas">Problemas resolvidos</a></li>
+                <li><a href="#exemplos">Exemplos</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="o-que-e">
+            <h2>O que é Docker</h2>
+            <div class="content-box">
+                <p>Docker é uma plataforma de código aberto que automatiza o processo de implantação de aplicativos dentro de <strong>contêineres</strong>. Isso permite que os aplicativos sejam executados no mesmo ambiente, independentemente de onde estejam sendo executados.</p>
+                
+                <div class="image-container">
+                    <img src="images/docker-vs-vm.png" alt="Docker vs Máquinas Virtuais" class="content-image">
+                    <p class="caption">Docker (contêineres) vs Máquinas Virtuais</p>
+                </div>
+                
+                <p>Um <strong>contêiner</strong> é uma unidade padronizada de software que empacota o código e todas as suas dependências para que o aplicativo seja executado de forma rápida e confiável de um ambiente computacional para outro.</p>
+            </div>
+        </section>
+
+        <section id="para-que-serve">
+            <h2>Para que serve Docker</h2>
+            <div class="content-box">
+                <p>Docker serve para:</p>
+                <ul>
+                    <li><strong>Padronizar ambientes</strong>: "Funciona na minha máquina" deixa de ser um problema</li>
+                    <li><strong>Isolar aplicações</strong>: Cada aplicação roda em seu próprio ambiente isolado</li>
+                    <li><strong>Facilitar a implantação</strong>: Implantar aplicações se torna mais simples e previsível</li>
+                    <li><strong>Escalar facilmente</strong>: Iniciar novos contêineres conforme a necessidade</li>
+                    <li><strong>Gerenciar infraestrutura</strong>: Tratar a infraestrutura como código</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="beneficios">
+            <h2>Benefícios do uso de Docker</h2>
+            <div class="content-box">
+                <div class="card-container">
+                    <div class="card">
+                        <h3>Consistência</h3>
+                        <p>Ambientes idênticos do desenvolvimento à produção</p>
+                    </div>
+                    <div class="card">
+                        <h3>Velocidade</h3>
+                        <p>Implantação e inicialização muito mais rápidas que VMs</p>
+                    </div>
+                    <div class="card">
+                        <h3>Isolamento</h3>
+                        <p>Aplicações isoladas sem interferir umas nas outras</p>
+                    </div>
+                    <div class="card">
+                        <h3>Eficiência</h3>
+                        <p>Uso mais eficiente de recursos comparado às VMs</p>
+                    </div>
+                    <div class="card">
+                        <h3>Portabilidade</h3>
+                        <p>Execute em qualquer lugar que tenha Docker instalado</p>
+                    </div>
+                    <div class="card">
+                        <h3>Versionamento</h3>
+                        <p>Controle de versão das imagens e fácil rollback</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="problemas">
+            <h2>Problemas que o Docker resolve</h2>
+            <div class="content-box">
+                <div class="problem-solution">
+                    <div class="problem">
+                        <h3>Problema: "Funciona na minha máquina"</h3>
+                        <p>Desenvolvedores e operações frequentemente enfrentam problemas quando o código funciona em um ambiente (como o laptop do desenvolvedor) mas falha em outro (como o servidor de produção).</p>
+                    </div>
+                    <div class="solution">
+                        <h3>Solução com Docker</h3>
+                        <p>Contêineres garantem que o ambiente de execução seja exatamente o mesmo em qualquer lugar.</p>
+                    </div>
+                </div>
+
+                <div class="problem-solution">
+                    <div class="problem">
+                        <h3>Problema: Conflito de dependências</h3>
+                        <p>Aplicações diferentes podem precisar de versões diferentes da mesma biblioteca, causando conflitos.</p>
+                    </div>
+                    <div class="solution">
+                        <h3>Solução com Docker</h3>
+                        <p>Cada contêiner tem suas próprias dependências isoladas.</p>
+                    </div>
+                </div>
+
+                <div class="problem-solution">
+                    <div class="problem">
+                        <h3>Problema: Configuração complexa de ambiente</h3>
+                        <p>Configurar ambientes de desenvolvimento pode ser demorado e propenso a erros.</p>
+                    </div>
+                    <div class="solution">
+                        <h3>Solução com Docker</h3>
+                        <p>Configuração automatizada através de Dockerfiles e Docker Compose.</p>
+                    </div>
+                </div>
+
+                <div class="problem-solution">
+                    <div class="problem">
+                        <h3>Problema: Escalabilidade difícil</h3>
+                        <p>Escalar aplicações tradicionais pode ser um processo complexo.</p>
+                    </div>
+                    <div class="solution">
+                        <h3>Solução com Docker</h3>
+                        <p>Fácil escala horizontal com orquestradores como Docker Swarm e Kubernetes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="exemplos">
+            <h2>Exemplos práticos de uso do Docker</h2>
+            
+            <div class="example" id="exemplo1">
+                <h3>Exemplo 1: Aplicação Web Simples</h3>
+                <div class="content-box">
+                    <p>Vamos criar um servidor web simples com Node.js e empacotá-lo em um contêiner Docker.</p>
+                    <div class="code-tabs">
+                        <button class="tab-button active" onclick="showTab('exemplo1-codigo')">Código</button>
+                        <button class="tab-button" onclick="showTab('exemplo1-dockerfile')">Dockerfile</button>
+                        <button class="tab-button" onclick="showTab('exemplo1-comandos')">Comandos</button>
+                    </div>
+                    <div id="exemplo1-codigo" class="tab-content active">
+                        <pre><code class="language-javascript">// app.js
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.send('Olá do Docker! 👋');
+});
+
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});</code></pre>
+                    </div>
+                    <div id="exemplo1-dockerfile" class="tab-content">
+                        <pre><code class="language-dockerfile"># Dockerfile
+FROM node:14-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["node", "app.js"]</code></pre>
+                    </div>
+                    <div id="exemplo1-comandos" class="tab-content">
+                        <pre><code class="language-bash"># Construir a imagem
+docker build -t minha-app-web .
+
+# Executar o contêiner
+docker run -p 3000:3000 -d minha-app-web
+
+# Ver contêineres em execução
+docker ps</code></pre>
+                    </div>
+                    <div class="example-description">
+                        <p><strong>Benefícios neste exemplo:</strong></p>
+                        <ul>
+                            <li>Aplicação isolada com todas suas dependências</li>
+                            <li>Fácil distribuição: qualquer pessoa pode executar com o mesmo resultado</li>
+                            <li>Sem necessidade de instalar Node.js na máquina host</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="example" id="exemplo2">
+                <h3>Exemplo 2: Banco de Dados</h3>
+                <div class="content-box">
+                    <p>Executando um banco de dados MySQL em um contêiner Docker.</p>
+                    <div class="code-tabs">
+                        <button class="tab-button active" onclick="showTab('exemplo2-comandos')">Comandos</button>
+                        <button class="tab-button" onclick="showTab('exemplo2-volume')">Persistência</button>
+                    </div>
+                    <div id="exemplo2-comandos" class="tab-content active">
+                        <pre><code class="language-bash"># Baixar e iniciar um contêiner MySQL
+docker run --name meu-mysql -e MYSQL_ROOT_PASSWORD=minhasenha -e MYSQL_DATABASE=meudb -p 3306:3306 -d mysql:8.0
+
+# Conectar ao MySQL rodando no contêiner
+docker exec -it meu-mysql mysql -uroot -pminhasenha meudb
+
+# Parar o contêiner
+docker stop meu-mysql
+
+# Iniciar novamente
+docker start meu-mysql</code></pre>
+                    </div>
+                    <div id="exemplo2-volume" class="tab-content">
+                        <pre><code class="language-bash"># Executar MySQL com um volume para persistência de dados
+docker run --name meu-mysql -v mysql-dados:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=minhasenha -e MYSQL_DATABASE=meudb -p 3306:3306 -d mysql:8.0
+
+# Listar volumes
+docker volume ls
+
+# Mesmo que o contêiner seja removido, os dados persistem
+docker rm -f meu-mysql
+docker run --name meu-mysql-novo -v mysql-dados:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=minhasenha -p 3306:3306 -d mysql:8.0</code></pre>
+                    </div>
+                    <div class="example-description">
+                        <p><strong>Benefícios neste exemplo:</strong></p>
+                        <ul>
+                            <li>Fácil configuração de bancos de dados sem instalação complexa</li>
+                            <li>Possibilidade de ter múltiplas versões de banco de dados na mesma máquina</li>
+                            <li>Persistência de dados com volumes Docker</li>
+                            <li>Ambiente de desenvolvimento consistente com produção</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="example" id="exemplo3">
+                <h3>Exemplo 3: Ambiente de Desenvolvimento</h3>
+                <div class="content-box">
+                    <p>Criando um ambiente de desenvolvimento padronizado para uma equipe.</p>
+                    <div class="code-tabs">
+                        <button class="tab-button active" onclick="showTab('exemplo3-dockerfile')">Dockerfile</button>
+                        <button class="tab-button" onclick="showTab('exemplo3-comandos')">Comandos</button>
+                    </div>
+                    <div id="exemplo3-dockerfile" class="tab-content active">
+                        <pre><code class="language-dockerfile"># Dockerfile.dev
+FROM python:3.9
+
+WORKDIR /app
+
+# Instalar dependências de desenvolvimento
+RUN pip install pytest pytest-cov flake8 black isort
+
+# Instalar dependências do projeto
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+# Montar o código do projeto como um volume
+# para refletir as alterações em tempo real
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]</code></pre>
+                    </div>
+                    <div id="exemplo3-comandos" class="tab-content">
+                        <pre><code class="language-bash"># Construir a imagem de desenvolvimento
+docker build -t meu-projeto-dev -f Dockerfile.dev .
+
+# Iniciar contêiner de desenvolvimento com código montado como volume
+docker run -it --name dev -p 8000:8000 -v $(pwd):/app meu-projeto-dev
+
+# Executar testes dentro do contêiner
+docker exec -it dev pytest
+
+# Executar formatação de código
+docker exec -it dev black .</code></pre>
+                    </div>
+                    <div class="example-description">
+                        <p><strong>Benefícios neste exemplo:</strong></p>
+                        <ul>
+                            <li>Ambiente de desenvolvimento idêntico para todos os membros da equipe</li>
+                            <li>Fácil onboarding de novos desenvolvedores</li>
+                            <li>Todas as ferramentas de desenvolvimento já configuradas</li>
+                            <li>Isolamento do ambiente de desenvolvimento do sistema host</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="example" id="exemplo4">
+                <h3>Exemplo 4: Aplicação Multi-Container com Docker Compose</h3>
+                <div class="content-box">
+                    <p>Criando uma aplicação que usa múltiplos serviços interconectados.</p>
+                    <div class="code-tabs">
+                        <button class="tab-button active" onclick="showTab('exemplo4-compose')">docker-compose.yml</button>
+                        <button class="tab-button" onclick="showTab('exemplo4-comandos')">Comandos</button>
+                    </div>
+                    <div id="exemplo4-compose" class="tab-content active">
+                        <pre><code class="language-yaml"># docker-compose.yml
+version: '3'
+
+services:
+  web:
+    build: ./web
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/app
+      - REDIS_URL=redis://redis:6379
+
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=app
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:</code></pre>
+                    </div>
+                    <div id="exemplo4-comandos" class="tab-content">
+                        <pre><code class="language-bash"># Iniciar todos os serviços
+docker-compose up -d
+
+# Ver logs de todos os serviços
+docker-compose logs -f
+
+# Parar todos os serviços
+docker-compose down
+
+# Reconstruir e reiniciar apenas o serviço web
+docker-compose up -d --build web</code></pre>
+                    </div>
+                    <div class="example-description">
+                        <p><strong>Benefícios neste exemplo:</strong></p>
+                        <ul>
+                            <li>Gerenciamento simplificado de múltiplos contêineres interconectados</li>
+                            <li>Configuração declarativa da infraestrutura como código</li>
+                            <li>Fácil reprodução do ambiente completo da aplicação</li>
+                            <li>Gerenciamento do ciclo de vida de todos os serviços com comandos simples</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Docker 101 - Um guia para iniciantes sobre containerização</p>
+            <p>Criado como projeto educacional</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+</html>
