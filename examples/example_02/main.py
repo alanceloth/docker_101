@@ -1,9 +1,7 @@
 # main.py
-from fastapi import FastAPI, Query, Body
+from fastapi import FastAPI, Query
 from pydantic import BaseModel
 from typing import List, Optional
-import os
-from datetime import date
 import pandas as pd
 
 app = FastAPI(title="API de Dados de Vendas")
