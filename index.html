@@ -698,7 +698,7 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Dashboard de Vendas", layout="wide")
 
 # Título
-st.title("Dashboard de Vendas - 2023")
+st.title("Dashboard de Vendas - 2025")
 
 # Carregar dados de exemplo
 @st.cache_data
@@ -737,7 +737,7 @@ with col3:
                     </div>
                     <div id="exemplo1-dockerfile" class="tab-content">
                         <pre><code class="language-dockerfile"># Dockerfile
-FROM python:3.10-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
@@ -873,7 +873,7 @@ def create_produto(produto: ProdutoCreate):
                     </div>
                     <div id="exemplo2-dockerfile" class="tab-content">
                         <pre><code class="language-dockerfile"># Dockerfile
-FROM python:3.10-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
@@ -960,11 +960,11 @@ CREATE TABLE vendas (
 -- Inserir dados de exemplo
 INSERT INTO vendas (data_venda, produto, categoria, valor, quantidade)
 VALUES 
-  ('2023-01-15', 'Curso Python', 'Educação', 197.00, 45),
-  ('2023-01-20', 'Assinatura BI', 'Software', 89.90, 28),
-  ('2023-02-05', 'Consultoria', 'Serviços', 1200.00, 3),
-  ('2023-02-12', 'Curso SQL', 'Educação', 147.00, 52),
-  ('2023-03-01', 'Licença Tableau', 'Software', 999.00, 15);
+  ('2025-01-15', 'Curso Python', 'Educação', 197.00, 45),
+  ('2025-01-20', 'Assinatura BI', 'Software', 89.90, 28),
+  ('2025-02-05', 'Consultoria', 'Serviços', 1200.00, 3),
+  ('2025-02-12', 'Curso SQL', 'Educação', 147.00, 52),
+  ('2025-03-01', 'Licença Tableau', 'Software', 999.00, 15);
 
 -- Análise de vendas por categoria
 SELECT 
@@ -1335,16 +1335,16 @@ CREATE TABLE vendas (
 
 INSERT INTO vendas (data_venda, produto, categoria, valor, quantidade)
 VALUES 
-  ('2023-01-15', 'Curso Python', 'Educação', 197.00, 45),
-  ('2023-01-20', 'Assinatura BI', 'Software', 89.90, 28),
-  ('2023-02-05', 'Consultoria', 'Serviços', 1200.00, 3),
-  ('2023-02-12', 'Curso SQL', 'Educação', 147.00, 52),
-  ('2023-03-01', 'Licença Tableau', 'Software', 999.00, 15);
+  ('2025-01-15', 'Curso Python', 'Educação', 197.00, 45),
+  ('2025-01-20', 'Assinatura BI', 'Software', 89.90, 28),
+  ('2025-02-05', 'Consultoria', 'Serviços', 1200.00, 3),
+  ('2025-02-12', 'Curso SQL', 'Educação', 147.00, 52),
+  ('2025-03-01', 'Licença Tableau', 'Software', 999.00, 15);
 EOF
 
 # Criar Dockerfile para a API
 cat > api/Dockerfile << 'EOF'
-FROM python:3.10-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
@@ -1373,7 +1373,7 @@ EOF
 
 # Criar Dockerfile para o Dashboard
 cat > dashboard/Dockerfile << 'EOF'
-FROM python:3.10-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
