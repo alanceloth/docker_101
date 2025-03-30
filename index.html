@@ -317,6 +317,8 @@ st.title("Dashboard de Vendas - 2023")
 # Carregar dados de exemplo
 @st.cache_data
 def load_data():
+    # NOTA: No exemplo isolado, usamos dados estáticos
+    # No exemplo do Docker Compose, estes dados virão da API
     data = {
         'Mês': ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
         'Vendas': [15000, 17500, 19800, 22300, 21500, 25000]
@@ -404,14 +406,15 @@ docker run -p 8501:8501 -d --name streamlit-app dashboard-vendas
                     </div>
                     <div id="exemplo2-codigo" class="tab-content active">
                         <pre><code class="language-python"># main.py
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Body
 from pydantic import BaseModel
 from typing import List, Optional
 import pandas as pd
 
 app = FastAPI(title="API de Dados de Vendas")
 
-# Dados simulados
+# Dados simulados - no exemplo isolado, usamos estes dados
+# No exemplo do Docker Compose, estes dados viriam do banco PostgreSQL
 vendas_df = pd.DataFrame({
     'id': range(1, 11),
     'produto': ['Laptop', 'Mouse', 'Teclado', 'Monitor', 'Headphone', 
@@ -424,6 +427,12 @@ vendas_df = pd.DataFrame({
 
 class Produto(BaseModel):
     id: int
+    produto: str
+    categoria: str
+    preco: float
+    quantidade_vendida: int
+
+class ProdutoCreate(BaseModel):
     produto: str
     categoria: str
     preco: float
@@ -457,7 +466,25 @@ def get_produto(produto_id: int):
     produto = vendas_df[vendas_df['id'] == produto_id]
     if not produto.empty:
         return produto.iloc[0].to_dict()
-    return {"erro": "Produto não encontrado"}</code></pre>
+    return {"erro": "Produto não encontrado"}
+
+# NOTA: Apenas no Docker Compose teremos a funcionalidade POST
+# abaixo está um exemplo de como seria implementado
+"""
+@app.post("/produtos", response_model=Produto)
+def create_produto(produto: ProdutoCreate):
+    # No exemplo do Docker Compose, este método salvaria no PostgreSQL
+    global vendas_df
+    
+    novo_id = vendas_df['id'].max() + 1 if not vendas_df.empty else 1
+    novo_produto = {
+        'id': novo_id,
+        **produto.dict()
+    }
+    
+    vendas_df = pd.concat([vendas_df, pd.DataFrame([novo_produto])])
+    return novo_produto
+"""</code></pre>
                     </div>
                     <div id="exemplo2-dockerfile" class="tab-content">
                         <pre><code class="language-dockerfile"># Dockerfile
@@ -524,6 +551,9 @@ docker ps
 
 # Executar o cliente psql dentro do contêiner
 docker exec -it postgres-dados psql -U analista -d datawarehouse
+
+# No exemplo isolado, o banco começa vazio
+# No Docker Compose, será preenchido com dados iniciais e através da API
 
 # Parar o contêiner
 docker stop postgres-dados
@@ -664,14 +694,14 @@ volumes:
                     </div>
                     <div id="exemplo4-fastapi" class="tab-content">
                         <pre><code class="language-python"># api/main.py
-from fastapi import FastAPI, Depends
-from sqlalchemy import create_engine, Column, Integer, String, Float, Date
+from fastapi import FastAPI, Depends, HTTPException, Body
+from sqlalchemy import create_engine, Column, Integer, String, Float, Date, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 import os
 from datetime import date
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 # Configuração do banco de dados
 DATABASE_URL = os.environ.get("DATABASE_URL")
@@ -690,7 +720,7 @@ class VendaDB(Base):
     valor = Column(Float)
     quantidade = Column(Integer)
 
-# Modelo Pydantic
+# Modelo Pydantic para leitura
 class Venda(BaseModel):
     id: int
     data_venda: date
@@ -701,6 +731,14 @@ class Venda(BaseModel):
     
     class Config:
         orm_mode = True
+
+# Modelo Pydantic para criação
+class VendaCreate(BaseModel):
+    data_venda: date
+    produto: str
+    categoria: str
+    valor: float
+    quantidade: int
 
 # Dependência para obter a sessão do banco
 def get_db():
@@ -722,9 +760,6 @@ def vendas_por_categoria(categoria: str, db: Session = Depends(get_db)):
 
 @app.get("/vendas/analise")
 def analise_vendas(db: Session = Depends(get_db)):
-    # Exemplo de consulta mais complexa
-    from sqlalchemy import func
-    
     resultado = db.query(
         VendaDB.categoria,
         func.count(VendaDB.id).label("total_vendas"),
@@ -740,16 +775,27 @@ def analise_vendas(db: Session = Depends(get_db)):
             "ticket_medio": float(r.ticket_medio)
         }
         for r in resultado
-    ]</code></pre>
+    ]
+
+# Endpoint para inserir novos dados - disponível apenas no Docker Compose
+@app.post("/vendas", response_model=Venda)
+def criar_venda(venda: VendaCreate, db: Session = Depends(get_db)):
+    nova_venda = VendaDB(**venda.dict())
+    db.add(nova_venda)
+    db.commit()
+    db.refresh(nova_venda)
+    return nova_venda</code></pre>
                     </div>
                     <div id="exemplo4-streamlit" class="tab-content">
                         <pre><code class="language-python"># dashboard/app.py
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import requests
 import os
 import json
+from datetime import datetime
 
 # Configuração
 API_URL = os.environ.get("API_URL", "http://api:8000")
@@ -775,67 +821,113 @@ def carregar_analise():
     response = requests.get(f"{API_URL}/vendas/analise")
     return pd.DataFrame(response.json())
 
+# Função para inserir novos dados
+def inserir_venda(dados):
+    response = requests.post(f"{API_URL}/vendas", json=dados)
+    return response.status_code == 200 or response.status_code == 201
+
 try:
     # Carregar dados
     df_vendas = carregar_vendas()
     df_analise = carregar_analise()
     
-    # Layout em colunas
-    col1, col2 = st.columns(2)
+    # Criar abas para separar visualização e entrada de dados
+    tab1, tab2 = st.tabs(["Visualização de Dados", "Inserir Novos Dados"])
     
-    # Coluna 1: Gráfico de barras - Receita por categoria
-    with col1:
-        st.subheader("Receita Total por Categoria")
-        fig1 = px.bar(
-            df_analise, 
-            x="categoria", 
-            y="receita_total",
-            text_auto=True,
-            color="categoria",
-            title="Receita Total por Categoria de Produto"
-        )
-        st.plotly_chart(fig1, use_container_width=True)
-    
-    # Coluna 2: Gráfico de pizza - Proporção de vendas
-    with col2:
-        st.subheader("Proporção de Vendas por Categoria")
-        fig2 = px.pie(
-            df_analise, 
-            values="total_vendas", 
-            names="categoria",
-            title="Distribuição de Vendas por Categoria"
-        )
-        st.plotly_chart(fig2, use_container_width=True)
-    
-    # Tabela completa
-    st.subheader("Dados de Vendas")
-    st.dataframe(df_vendas)
-    
-    # Filtro por categoria
-    st.sidebar.title("Filtros")
-    categorias = ["Todas"] + sorted(df_vendas["categoria"].unique().tolist())
-    categoria_selecionada = st.sidebar.selectbox("Selecione uma categoria:", categorias)
-    
-    if categoria_selecionada != "Todas":
-        df_filtrado = df_vendas[df_vendas["categoria"] == categoria_selecionada]
-        st.subheader(f"Vendas na categoria: {categoria_selecionada}")
-        st.dataframe(df_filtrado)
+    with tab1:
+        # Layout em colunas
+        col1, col2 = st.columns(2)
         
-        # Gráfico de linha para a categoria
-        if not df_filtrado.empty:
-            df_por_data = df_filtrado.groupby("data_venda").agg(
-                {"valor": lambda x: (x * df_filtrado["quantidade"]).sum()}
-            ).reset_index()
-            df_por_data.columns = ["data", "receita"]
-            
-            fig3 = px.line(
-                df_por_data, 
-                x="data", 
-                y="receita",
-                markers=True,
-                title=f"Evolução de Receita: {categoria_selecionada}"
+        # Coluna 1: Gráfico de barras - Receita por categoria
+        with col1:
+            st.subheader("Receita Total por Categoria")
+            fig1 = px.bar(
+                df_analise, 
+                x="categoria", 
+                y="receita_total",
+                text_auto=True,
+                color="categoria",
+                title="Receita Total por Categoria de Produto"
             )
-            st.plotly_chart(fig3, use_container_width=True)
+            st.plotly_chart(fig1, use_container_width=True)
+        
+        # Coluna 2: Gráfico de pizza - Proporção de vendas
+        with col2:
+            st.subheader("Proporção de Vendas por Categoria")
+            fig2 = px.pie(
+                df_analise, 
+                values="total_vendas", 
+                names="categoria",
+                title="Distribuição de Vendas por Categoria"
+            )
+            st.plotly_chart(fig2, use_container_width=True)
+        
+        # Tabela completa
+        st.subheader("Dados de Vendas")
+        st.dataframe(df_vendas)
+        
+        # Filtro por categoria
+        st.sidebar.title("Filtros")
+        categorias = ["Todas"] + sorted(df_vendas["categoria"].unique().tolist())
+        categoria_selecionada = st.sidebar.selectbox("Selecione uma categoria:", categorias)
+        
+        if categoria_selecionada != "Todas":
+            df_filtrado = df_vendas[df_vendas["categoria"] == categoria_selecionada]
+            st.subheader(f"Vendas na categoria: {categoria_selecionada}")
+            st.dataframe(df_filtrado)
+            
+            # Gráfico de linha para a categoria
+            if not df_filtrado.empty:
+                df_por_data = df_filtrado.groupby("data_venda").agg(
+                    {"valor": lambda x: (x * df_filtrado["quantidade"]).sum()}
+                ).reset_index()
+                df_por_data.columns = ["data", "receita"]
+                
+                fig3 = px.line(
+                    df_por_data, 
+                    x="data", 
+                    y="receita",
+                    markers=True,
+                    title=f"Evolução de Receita: {categoria_selecionada}"
+                )
+                st.plotly_chart(fig3, use_container_width=True)
+    
+    with tab2:
+        # Formulário para adicionar novas vendas
+        st.subheader("Adicionar Nova Venda")
+        with st.form("nova_venda_form"):
+            data_venda = st.date_input("Data da Venda", datetime.now().date())
+            produto = st.text_input("Nome do Produto")
+            
+            # Usar categorias existentes ou permitir nova
+            usar_categoria_existente = st.checkbox("Usar categoria existente", value=True)
+            if usar_categoria_existente and not df_vendas.empty:
+                categoria = st.selectbox("Categoria", sorted(df_vendas["categoria"].unique().tolist()))
+            else:
+                categoria = st.text_input("Nova Categoria")
+                
+            valor = st.number_input("Valor Unitário (R$)", min_value=0.01, format="%.2f")
+            quantidade = st.number_input("Quantidade", min_value=1, step=1)
+            
+            submitted = st.form_submit_button("Adicionar Venda")
+            
+            if submitted:
+                if not produto or not categoria:
+                    st.error("Todos os campos são obrigatórios!")
+                else:
+                    nova_venda = {
+                        "data_venda": data_venda.isoformat(),
+                        "produto": produto,
+                        "categoria": categoria,
+                        "valor": valor,
+                        "quantidade": quantidade
+                    }
+                    
+                    if inserir_venda(nova_venda):
+                        st.success("Venda adicionada com sucesso!")
+                        st.cache_data.clear()  # Limpar cache para recarregar dados
+                    else:
+                        st.error("Erro ao adicionar venda. Verifique os dados e tente novamente.")
     
 except Exception as e:
     st.error(f"Erro ao carregar dados: {e}")
@@ -927,11 +1019,19 @@ docker-compose down -v</code></pre>
                         <ul>
                             <li>Stack completa de análise de dados orquestrada com um único comando</li>
                             <li>Comunicação entre serviços usando a rede interna do Docker</li>
-                            <li>Gerenciamento centralizado de configurações e dependências</li>
+                            <li>Fluxo de dados bidirecional: inserção de dados via dashboard → API → banco de dados</li>
+                            <li>Atualização em tempo real dos gráficos após inserção de novos dados</li>
                             <li>Persistência de dados com volumes Docker</li>
-                            <li>Pipeline de dados completo: banco → API → dashboard</li>
-                            <li>Fácil distribuição da aplicação completa para outros ambientes</li>
+                            <li>Pipeline de dados completo com feedback circular</li>
                         </ul>
+                        <p><strong>Fluxo completo de dados:</strong></p>
+                        <ol>
+                            <li>Usuário insere dados no dashboard Streamlit</li>
+                            <li>Dashboard envia dados para a API FastAPI</li>
+                            <li>API persiste dados no PostgreSQL</li>
+                            <li>Dashboard consulta API para atualizar visualizações</li>
+                            <li>API obtém dados do PostgreSQL</li>
+                        </ol>
                     </div>
                 </div>
             </div>
