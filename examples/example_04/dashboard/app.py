@@ -12,7 +12,7 @@ API_URL = os.environ.get("API_URL", "http://api:8000")
 st.set_page_config(
     page_title="Dashboard de Análise de Vendas",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="auto"
 )
 
 # Título
@@ -44,6 +44,11 @@ try:
     tab1, tab2 = st.tabs(["Visualização de Dados", "Inserir Novos Dados"])
     
     with tab1:
+        # Filtro por categoria (movido da sidebar para a parte superior)
+        st.subheader("Filtros")
+        categorias = ["Todas"] + sorted(df_vendas["categoria"].unique().tolist())
+        categoria_selecionada = st.selectbox("Selecione uma categoria:", categorias)
+        
         # Layout em colunas
         col1, col2 = st.columns(2)
         
@@ -75,11 +80,7 @@ try:
         st.subheader("Dados de Vendas")
         st.dataframe(df_vendas)
         
-        # Filtro por categoria
-        st.sidebar.title("Filtros")
-        categorias = ["Todas"] + sorted(df_vendas["categoria"].unique().tolist())
-        categoria_selecionada = st.sidebar.selectbox("Selecione uma categoria:", categorias)
-        
+        # Exibição dos dados filtrados (movido da sidebar)
         if categoria_selecionada != "Todas":
             df_filtrado = df_vendas[df_vendas["categoria"] == categoria_selecionada]
             st.subheader(f"Vendas na categoria: {categoria_selecionada}")
@@ -134,7 +135,10 @@ try:
                     
                     if inserir_venda(nova_venda):
                         st.success("Venda adicionada com sucesso!")
-                        st.cache_data.clear()  # Limpar cache para recarregar dados
+                        # Limpar cache para atualizar os dados
+                        st.cache_data.clear()
+                        # Adicionar rerun para forçar a atualização da página
+                        st.rerun()
                     else:
                         st.error("Erro ao adicionar venda. Verifique os dados e tente novamente.")
     
